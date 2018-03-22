@@ -1,5 +1,5 @@
 ///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
-System.register(['app/plugins/sdk', 'moment', 'jquery', 'app/core/app_events'], function(exports_1) {
+System.register(['app/plugins/sdk', 'moment', 'jquery', './css/grafana-discrete-panel.css!', 'app/core/app_events'], function(exports_1) {
     var __extends = (this && this.__extends) || function (d, b) {
         for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
         function __() { this.constructor = d; }
@@ -18,6 +18,7 @@ System.register(['app/plugins/sdk', 'moment', 'jquery', 'app/core/app_events'], 
             function (jquery_1_1) {
                 jquery_1 = jquery_1_1;
             },
+            function (_1) {},
             function (app_events_1_1) {
                 app_events_1 = app_events_1_1;
             }],
@@ -139,9 +140,10 @@ System.register(['app/plugins/sdk', 'moment', 'jquery', 'app/core/app_events'], 
                     this.wrap = elem.find('.canvas-spot')[0];
                     this.canvas = document.createElement('canvas');
                     this.wrap.appendChild(this.canvas);
+                    this.rowsel = elem.find('.row-selection')[0];
                     jquery_1.default(this.canvas).css('cursor', 'pointer');
                     jquery_1.default(this.wrap).css('width', '100%');
-                    //  console.log( 'link', this );
+                    console.log('link', this);
                     this.context = this.canvas.getContext('2d');
                     this.canvas.addEventListener('mousemove', function (evt) {
                         if (!_this.range) {

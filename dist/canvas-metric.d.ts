@@ -5,8 +5,10 @@ export declare class CanvasPanelCtrl extends MetricsPanelCtrl {
     mouse: any;
     $tooltip: any;
     wrap: any;
+    rowsel: any;
     canvas: any;
     context: any;
+    table_select: any;
     _devicePixelRatio: number;
     constructor($scope: any, $injector: any);
     onPanelInitalized(): void;

@@ -174,6 +174,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     this._renderLabels();
     this._renderSelection();
     this._renderCrosshair();
+    this._renderRowSelection();
   }
 
   showLegandTooltip(pos, info) {
@@ -870,6 +871,22 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       ctx.fill();
       ctx.lineWidth = 1;
     }
+  }
+
+  _renderRowSelection() {
+    const matrix = this._renderDimensions.matrix;
+    const ctx = this.context;
+    if (this.rowsel.childElementCount != 0)
+      this.rowsel.removeChild(this.rowsel.childNodes[0]);
+    var table_select = document.createElement('table');
+    this.rowsel.appendChild(table_select);
+    _.forEach(this.data, (metric, i) => {
+      var tr = document.createElement('tr');
+      $(tr).css('height', this.panel.rowHeight + 'px');
+      table_select.appendChild(tr);
+      var td = document.createElement('td');
+      tr.appendChild(td);
+    });
   }
 }
 

@@ -83,5 +83,6 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
     _renderLabels(): void;
     _renderSelection(): void;
     _renderCrosshair(): void;
+    _renderRowSelection(): void;
 }
 export { DiscretePanelCtrl as PanelCtrl };

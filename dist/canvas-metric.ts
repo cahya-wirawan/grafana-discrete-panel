@@ -5,6 +5,7 @@ import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import _ from 'lodash';
 import moment from 'moment';
 import $ from 'jquery';
+import './css/grafana-discrete-panel.css!';
 
 import appEvents from 'app/core/app_events';
 
@@ -15,8 +16,10 @@ export class CanvasPanelCtrl extends MetricsPanelCtrl {
   mouse: any;
   $tooltip: any;
   wrap: any;
+  rowsel: any;
   canvas: any;
   context: any;
+  table_select: any;
   _devicePixelRatio: number;
 
   constructor($scope, $injector) {
@@ -153,11 +156,12 @@ export class CanvasPanelCtrl extends MetricsPanelCtrl {
     this.wrap = elem.find('.canvas-spot')[0];
     this.canvas = document.createElement('canvas');
     this.wrap.appendChild(this.canvas);
+    this.rowsel = elem.find('.row-selection')[0];
 
     $(this.canvas).css('cursor', 'pointer');
     $(this.wrap).css('width', '100%');
 
-    //  console.log( 'link', this );
+    console.log( 'link', this );
 
     this.context = this.canvas.getContext('2d');
     this.canvas.addEventListener(

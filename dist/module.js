@@ -163,6 +163,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     this._renderLabels();
                     this._renderSelection();
                     this._renderCrosshair();
+                    this._renderRowSelection();
                 };
                 DiscretePanelCtrl.prototype.showLegandTooltip = function (pos, info) {
                     var body = '<div class="graph-tooltip-time">' + info.val + '</div>';
@@ -775,6 +776,22 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         ctx.fill();
                         ctx.lineWidth = 1;
                     }
+                };
+                DiscretePanelCtrl.prototype._renderRowSelection = function () {
+                    var _this = this;
+                    var matrix = this._renderDimensions.matrix;
+                    var ctx = this.context;
+                    if (this.rowsel.childElementCount != 0)
+                        this.rowsel.removeChild(this.rowsel.childNodes[0]);
+                    var table_select = document.createElement('table');
+                    this.rowsel.appendChild(table_select);
+                    lodash_1.default.forEach(this.data, function (metric, i) {
+                        var tr = document.createElement('tr');
+                        jquery_1.default(tr).css('height', _this.panel.rowHeight + 'px');
+                        table_select.appendChild(tr);
+                        var td = document.createElement('td');
+                        tr.appendChild(td);
+                    });
                 };
                 DiscretePanelCtrl.templateUrl = 'partials/module.html';
                 DiscretePanelCtrl.scrollable = true;
