@@ -161,7 +161,7 @@ export class CanvasPanelCtrl extends MetricsPanelCtrl {
     $(this.canvas).css('cursor', 'pointer');
     $(this.wrap).css('width', '100%');
 
-    console.log( 'link', this );
+    console.log('link', this);
 
     this.context = this.canvas.getContext('2d');
     this.canvas.addEventListener(

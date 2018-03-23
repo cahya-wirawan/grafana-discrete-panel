@@ -885,6 +885,11 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       $(tr).css('height', this.panel.rowHeight + 'px');
       table_select.appendChild(tr);
       var td = document.createElement('td');
+      td.addEventListener('click', function() {
+        console.log('TD is clicked:' + metric.name);
+        var url = window.location.href + '&location=' + metric.name;
+        window.open(url, '_blank');
+      });
       tr.appendChild(td);
     });
   }

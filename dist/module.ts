@@ -173,8 +173,8 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     this._renderRects();
     this._renderLabels();
     this._renderSelection();
-      this._renderCrosshair();
-      this._renderRowSelection();
+    this._renderCrosshair();
+    this._renderRowSelection();
   }
 
   showLegandTooltip(pos, info) {
@@ -876,16 +876,21 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
   _renderRowSelection() {
     const matrix = this._renderDimensions.matrix;
     const ctx = this.context;
-    if(this.rowsel.childElementCount != 0)
+    if (this.rowsel.childElementCount != 0)
       this.rowsel.removeChild(this.rowsel.childNodes[0]);
     var table_select = document.createElement('table');
     this.rowsel.appendChild(table_select);
     _.forEach(this.data, (metric, i) => {
-        var tr = document.createElement('tr');
-        $(tr).css('height', this.panel.rowHeight + 'px');
-        table_select.appendChild(tr);
-        var td = document.createElement('td');
-        tr.appendChild(td);
+      var tr = document.createElement('tr');
+      $(tr).css('height', this.panel.rowHeight + 'px');
+      table_select.appendChild(tr);
+      var td = document.createElement('td');
+      td.addEventListener("click", function(){
+          console.log("TD is clicked:" + metric.name);
+          var url = window.location.href + "&location=" + metric.name;
+          window.open(url, '_blank');
+      })
+      tr.appendChild(td);
     });
   }
 }
