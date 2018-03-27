@@ -78,4 +78,19 @@
         </div>
     </div>
 
+    <div class="section gf-form-group">
+        <h5 class="section-heading">Drilldown on Row</h5>
+        <div class="gf-form">
+            <label class="gf-form-label width-6">Url
+                <info-popover mode="right-normal">This will open a new window/tab with the base url defined here</info-popover>
+            </label>
+            <input type="string" ng-model="ctrl.panel.rowSelectorURL" class="gf-form-input max-width-15" ng-blur="ctrl.onConfigChanged()" />
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-6">Url param
+            </label>
+            <input type="string" ng-model="ctrl.panel.rowSelectorURLParam" class="gf-form-input max-width-15" ng-blur="ctrl.onConfigChanged()" />
+        </div>
+    </div>
+
 </div>

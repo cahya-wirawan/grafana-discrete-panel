@@ -14,5 +14,27 @@
   /* border: 1px solid #990; */
 }
 .row-selection table tr:hover {
-  background-color: yellow;
+  background-color: #c8d650;
+  box-shadow: inset 0 0 0 4px #ffffff, 0 0 1px rgba(0, 0, 0, 0);
+}
+
+/* Border Fade */
+.hvr-border-fade {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow;
+  transition-property: box-shadow;
+  box-shadow: inset 0 0 0 4px #e1e1e1, 0 0 1px rgba(0, 0, 0, 0);
+  /* Hack to improve aliasing on mobile/tablet devices */
+}
+.hvr-border-fade:hover,
+.hvr-border-fade:focus,
+.hvr-border-fade:active {
+  box-shadow: inset 0 0 0 4px #2098d1, 0 0 1px rgba(0, 0, 0, 0);
+  /* Hack to improve aliasing on mobile/tablet devices */
 }

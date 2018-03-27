@@ -118,6 +118,8 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         expandFromQueryS: 0,
                         legendSortBy: '-ms',
                         units: 'short',
+                        rowSelectorURL: '',
+                        rowSelectorURLParam: ''
                     };
                     this.data = null;
                     this.externalPT = false;
@@ -781,6 +783,8 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var _this = this;
                     var matrix = this._renderDimensions.matrix;
                     var ctx = this.context;
+                    var panel = this.panel;
+                    var range = this.range;
                     if (this.rowsel.childElementCount != 0)
                         this.rowsel.removeChild(this.rowsel.childNodes[0]);
                     var table_select = document.createElement('table');
@@ -788,12 +792,19 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     lodash_1.default.forEach(this.data, function (metric, i) {
                         var tr = document.createElement('tr');
                         jquery_1.default(tr).css('height', _this.panel.rowHeight + 'px');
+                        tr.title = metric.name;
+                        //tr.setAttribute("class", "hvr-border-fade");
                         table_select.appendChild(tr);
                         var td = document.createElement('td');
-                        td.addEventListener("click", function () {
-                            console.log("TD is clicked:" + metric.name);
-                            var url = window.location.href + "&location=" + metric.name;
-                            window.open(url, '_blank');
+                        td.addEventListener('click', function () {
+                            if (panel.rowSelectorURL != "") {
+                                if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != "/") {
+                                    panel.rowSelectorURL += "/";
+                                }
+                                var url = panel.rowSelectorURL + 'from=' + range.from + '&to=' + range.to +
+                                    '&' + panel.rowSelectorURLParam + '=' + metric.name;
+                                window.open(url, '_blank');
+                            }
                         });
                         tr.appendChild(td);
                     });

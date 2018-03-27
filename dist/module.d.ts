@@ -38,6 +38,8 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
         expandFromQueryS: number;
         legendSortBy: string;
         units: string;
+        rowSelectorURL: string;
+        rowSelectorURLParam: string;
     };
     data: any;
     externalPT: boolean;

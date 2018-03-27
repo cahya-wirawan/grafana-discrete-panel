@@ -100,6 +100,8 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     expandFromQueryS: 0,
     legendSortBy: '-ms',
     units: 'short',
+    rowSelectorURL: '',
+    rowSelectorURLParam: '',
   };
 
   data: any = null;
@@ -876,6 +878,8 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
   _renderRowSelection() {
     const matrix = this._renderDimensions.matrix;
     const ctx = this.context;
+    const panel = this.panel;
+    const range = this.range;
     if (this.rowsel.childElementCount != 0)
       this.rowsel.removeChild(this.rowsel.childNodes[0]);
     var table_select = document.createElement('table');
@@ -883,12 +887,27 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     _.forEach(this.data, (metric, i) => {
       var tr = document.createElement('tr');
       $(tr).css('height', this.panel.rowHeight + 'px');
+      tr.title = metric.name;
+      //tr.setAttribute("class", "hvr-border-fade");
       table_select.appendChild(tr);
       var td = document.createElement('td');
       td.addEventListener('click', function() {
-        console.log('TD is clicked:' + metric.name);
-        var url = window.location.href + '&location=' + metric.name;
-        window.open(url, '_blank');
+        if (panel.rowSelectorURL != '') {
+          if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
+            panel.rowSelectorURL += '/';
+          }
+          var url =
+            panel.rowSelectorURL +
+            'from=' +
+            range.from +
+            '&to=' +
+            range.to +
+            '&' +
+            panel.rowSelectorURLParam +
+            '=' +
+            metric.name;
+          window.open(url, '_blank');
+        }
       });
       tr.appendChild(td);
     });
