@@ -119,7 +119,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         legendSortBy: '-ms',
                         units: 'short',
                         rowSelectorURL: '',
-                        rowSelectorURLParam: ''
+                        rowSelectorURLParam: '',
                     };
                     this.data = null;
                     this.externalPT = false;
@@ -789,20 +789,32 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         this.rowsel.removeChild(this.rowsel.childNodes[0]);
                     var table_select = document.createElement('table');
                     this.rowsel.appendChild(table_select);
+                    var rowselParent = this.rowsel.parentNode;
+                    var width = Math.min(this.panel.rowHeight + 4, 60);
+                    var width = Math.max(width, 20);
+                    jquery_1.default(rowselParent).css('width', width + 'px');
                     lodash_1.default.forEach(this.data, function (metric, i) {
                         var tr = document.createElement('tr');
                         jquery_1.default(tr).css('height', _this.panel.rowHeight + 'px');
+                        jquery_1.default(tr).css('background-size', (width - 8) + 'px ' + (width - 8) + 'px');
                         tr.title = metric.name;
                         //tr.setAttribute("class", "hvr-border-fade");
                         table_select.appendChild(tr);
                         var td = document.createElement('td');
                         td.addEventListener('click', function () {
-                            if (panel.rowSelectorURL != "") {
-                                if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != "/") {
-                                    panel.rowSelectorURL += "/";
+                            if (panel.rowSelectorURL != '') {
+                                if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
+                                    panel.rowSelectorURL += '/';
                                 }
-                                var url = panel.rowSelectorURL + 'from=' + range.from + '&to=' + range.to +
-                                    '&' + panel.rowSelectorURLParam + '=' + metric.name;
+                                var url = panel.rowSelectorURL +
+                                    'from=' +
+                                    range.from +
+                                    '&to=' +
+                                    range.to +
+                                    '&' +
+                                    panel.rowSelectorURLParam +
+                                    '=' +
+                                    metric.name;
                                 window.open(url, '_blank');
                             }
                         });

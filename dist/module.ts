@@ -101,7 +101,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     legendSortBy: '-ms',
     units: 'short',
     rowSelectorURL: '',
-    rowSelectorURLParam: ''
+    rowSelectorURLParam: '',
   };
 
   data: any = null;
@@ -884,20 +884,33 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       this.rowsel.removeChild(this.rowsel.childNodes[0]);
     var table_select = document.createElement('table');
     this.rowsel.appendChild(table_select);
+    var rowselParent = this.rowsel.parentNode;
+    var width = Math.min(this.panel.rowHeight + 4, 60)
+    var width = Math.max(width, 20)
+    $(rowselParent).css('width', width + 'px' )
     _.forEach(this.data, (metric, i) => {
       var tr = document.createElement('tr');
       $(tr).css('height', this.panel.rowHeight + 'px');
+      $(tr).css('background-size', (width-8) + 'px ' + (width-8) + 'px');
       tr.title = metric.name;
       //tr.setAttribute("class", "hvr-border-fade");
       table_select.appendChild(tr);
       var td = document.createElement('td');
       td.addEventListener('click', function() {
-        if(panel.rowSelectorURL != "") {
-          if(panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != "/") {
-            panel.rowSelectorURL += "/"
+        if (panel.rowSelectorURL != '') {
+          if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
+            panel.rowSelectorURL += '/';
           }
-          var url = panel.rowSelectorURL + 'from=' + range.from + '&to=' + range.to  +
-              '&' + panel.rowSelectorURLParam + '=' + metric.name;
+          var url =
+            panel.rowSelectorURL +
+            'from=' +
+            range.from +
+            '&to=' +
+            range.to +
+            '&' +
+            panel.rowSelectorURLParam +
+            '=' +
+            metric.name;
           window.open(url, '_blank');
         }
       });

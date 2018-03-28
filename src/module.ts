@@ -884,9 +884,14 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       this.rowsel.removeChild(this.rowsel.childNodes[0]);
     var table_select = document.createElement('table');
     this.rowsel.appendChild(table_select);
+    var rowselParent = this.rowsel.parentNode;
+    var width = Math.min(this.panel.rowHeight + 4, 60);
+    var width = Math.max(width, 20);
+    $(rowselParent).css('width', width + 'px');
     _.forEach(this.data, (metric, i) => {
       var tr = document.createElement('tr');
       $(tr).css('height', this.panel.rowHeight + 'px');
+      $(tr).css('background-size', width - 8 + 'px ' + (width - 8) + 'px');
       tr.title = metric.name;
       //tr.setAttribute("class", "hvr-border-fade");
       table_select.appendChild(tr);
