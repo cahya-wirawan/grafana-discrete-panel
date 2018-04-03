@@ -508,11 +508,12 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                 DiscretePanelCtrl.prototype._updateRenderDimensions = function () {
                     var _this = this;
                     this._renderDimensions = {};
-                    var rect = (this._renderDimensions.rect = this.wrap.getBoundingClientRect());
+                    var rect = (this._renderDimensions.rect = this.wrap_parent.getBoundingClientRect());
                     var rows = (this._renderDimensions.rows = this.data.length);
                     var rowHeight = (this._renderDimensions.rowHeight = this.panel.rowHeight);
+                    this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
                     var height = (this._renderDimensions.height = rowHeight * rows);
-                    var width = (this._renderDimensions.width = rect.width);
+                    var width = (this._renderDimensions.width = rect.width - this.rowselWidth);
                     var rectHeight = (this._renderDimensions.rectHeight = rowHeight);
                     var top = 0;
                     var elapsed = this.range.to - this.range.from;
@@ -791,8 +792,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var table_select = document.createElement('table');
                     this.rowsel.appendChild(table_select);
                     var rowselParent = this.rowsel.parentNode;
-                    var width = Math.min(this.panel.rowHeight + 4, 60);
-                    var width = Math.max(width, 20);
+                    var width = this.rowselWidth;
                     jquery_1.default(rowselParent).css('width', width + 'px');
                     lodash_1.default.forEach(this.data, function (metric, i) {
                         var tr = document.createElement('tr');

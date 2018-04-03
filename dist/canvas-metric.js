@@ -138,11 +138,12 @@ System.register(['app/plugins/sdk', 'moment', 'jquery', './css/grafana-discrete-
                 CanvasPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
                     var _this = this;
                     this.wrap = elem.find('.canvas-spot')[0];
+                    this.wrap_parent = elem.find('.canvas-panel')[0];
                     this.canvas = document.createElement('canvas');
                     this.wrap.appendChild(this.canvas);
                     this.rowsel = elem.find('.row-selection')[0];
                     jquery_1.default(this.canvas).css('cursor', 'pointer');
-                    jquery_1.default(this.wrap).css('width', '100%');
+                    //$(this.wrap).css('width', '100%');
                     console.log('link', this);
                     this.context = this.canvas.getContext('2d');
                     this.canvas.addEventListener('mousemove', function (evt) {

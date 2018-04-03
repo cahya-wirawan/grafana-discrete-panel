@@ -5,7 +5,9 @@ export declare class CanvasPanelCtrl extends MetricsPanelCtrl {
     mouse: any;
     $tooltip: any;
     wrap: any;
+    wrap_parent: any;
     rowsel: any;
+    rowselWidth: any;
     canvas: any;
     context: any;
     table_select: any;

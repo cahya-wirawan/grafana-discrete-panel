@@ -560,11 +560,12 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
   _updateRenderDimensions() {
     this._renderDimensions = {};
 
-    let rect = (this._renderDimensions.rect = this.wrap.getBoundingClientRect());
+    let rect = (this._renderDimensions.rect = this.wrap_parent.getBoundingClientRect());
     let rows = (this._renderDimensions.rows = this.data.length);
     let rowHeight = (this._renderDimensions.rowHeight = this.panel.rowHeight);
+    this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
     let height = (this._renderDimensions.height = rowHeight * rows);
-    let width = (this._renderDimensions.width = rect.width);
+    let width = (this._renderDimensions.width = rect.width - this.rowselWidth);
     let rectHeight = (this._renderDimensions.rectHeight = rowHeight);
 
     let top = 0;
@@ -886,8 +887,8 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     var table_select = document.createElement('table');
     this.rowsel.appendChild(table_select);
     var rowselParent = this.rowsel.parentNode;
-    var width = Math.min(this.panel.rowHeight + 4, 60);
-    var width = Math.max(width, 20);
+    var width = this.rowselWidth;
+
     $(rowselParent).css('width', width + 'px');
     _.forEach(this.data, (metric, i) => {
       var tr = document.createElement('tr');

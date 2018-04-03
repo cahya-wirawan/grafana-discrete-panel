@@ -16,7 +16,9 @@ export class CanvasPanelCtrl extends MetricsPanelCtrl {
   mouse: any;
   $tooltip: any;
   wrap: any;
+  wrap_parent: any;
   rowsel: any;
+  rowselWidth: any;
   canvas: any;
   context: any;
   table_select: any;
@@ -154,12 +156,13 @@ export class CanvasPanelCtrl extends MetricsPanelCtrl {
 
   link(scope, elem, attrs, ctrl) {
     this.wrap = elem.find('.canvas-spot')[0];
+    this.wrap_parent = elem.find('.canvas-panel')[0];
     this.canvas = document.createElement('canvas');
     this.wrap.appendChild(this.canvas);
     this.rowsel = elem.find('.row-selection')[0];
 
     $(this.canvas).css('cursor', 'pointer');
-    $(this.wrap).css('width', '100%');
+    //$(this.wrap).css('width', '100%');
 
     console.log('link', this);
 
