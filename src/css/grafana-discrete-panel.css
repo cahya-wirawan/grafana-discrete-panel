@@ -17,6 +17,7 @@
 .row-selection table tr td {
   /* border: 1px solid #990; */
 }
+
 .row-selection table tr:hover {
   /*
   background-color: #c8d650;
@@ -26,4 +27,16 @@
   /*background-size: 25px 25px;*/
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.legend-extended-container {
+  padding-top: 5px;
+}
+
+.legend-extended {
+  background-image: url('../img/legend-color-grey-small.png');
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: 500px 83px;
+  height: 80px;
 }

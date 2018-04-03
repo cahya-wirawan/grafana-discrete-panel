@@ -34,6 +34,7 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
         showLegendNames: boolean;
         showLegendValues: boolean;
         showLegendPercent: boolean;
+        showLegendExtended: boolean;
         highlightOnMouseover: boolean;
         expandFromQueryS: number;
         legendSortBy: string;

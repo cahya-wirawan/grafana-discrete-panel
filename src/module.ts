@@ -96,6 +96,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     showLegendNames: true,
     showLegendValues: true,
     showLegendPercent: true,
+    showLegendExtended: false,
     highlightOnMouseover: true,
     expandFromQueryS: 0,
     legendSortBy: '-ms',

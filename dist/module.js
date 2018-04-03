@@ -114,6 +114,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         showLegendNames: true,
                         showLegendValues: true,
                         showLegendPercent: true,
+                        showLegendExtended: false,
                         highlightOnMouseover: true,
                         expandFromQueryS: 0,
                         legendSortBy: '-ms',
@@ -796,7 +797,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     lodash_1.default.forEach(this.data, function (metric, i) {
                         var tr = document.createElement('tr');
                         jquery_1.default(tr).css('height', _this.panel.rowHeight + 'px');
-                        jquery_1.default(tr).css('background-size', (width - 8) + 'px ' + (width - 8) + 'px');
+                        jquery_1.default(tr).css('background-size', width - 8 + 'px ' + (width - 8) + 'px');
                         tr.title = metric.name;
                         //tr.setAttribute("class", "hvr-border-fade");
                         table_select.appendChild(tr);
