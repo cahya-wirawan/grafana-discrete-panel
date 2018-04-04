@@ -34,7 +34,7 @@ yarn pretty
 
 ##### v0.0.8
 
-* Add button with links to each rows (see the first picture above). The URL is to define in the options tab. 
+* Add button with links to each rows (see the first picture above). The URL is to define in the options tab.
 
 ##### v0.0.7
 
