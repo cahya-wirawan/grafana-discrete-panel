@@ -5,6 +5,7 @@ choice to display string or boolean data
 
 ### Screenshots
 
+![example](https://raw.githubusercontent.com/cahya-wirawan/grafana-discrete-panel/master/src/img/screenshot-station-1.png)
 ![example](https://raw.githubusercontent.com/NatelEnergy/grafana-discrete-panel/master/src/img/screenshot-single-1.png)
 ![example](https://raw.githubusercontent.com/NatelEnergy/grafana-discrete-panel/master/src/img/screenshot-single-2.png)
 ![example](https://raw.githubusercontent.com/NatelEnergy/grafana-discrete-panel/master/src/img/screenshot-single-3.png)
@@ -30,6 +31,10 @@ yarn pretty
 ```
 
 #### Changelog
+
+##### v0.0.8
+
+* Add button with links to each rows (see the first picture above). The URL is to define in the options tab. 
 
 ##### v0.0.7
 
