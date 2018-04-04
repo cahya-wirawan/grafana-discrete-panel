@@ -900,12 +900,12 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       var td = document.createElement('td');
       td.addEventListener('click', function() {
         if (panel.rowSelectorURL != '') {
-          if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
-            panel.rowSelectorURL += '/';
-          }
+          // if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
+          //   panel.rowSelectorURL += '/';
+          // }
           var url =
             panel.rowSelectorURL +
-            'from=' +
+            '?from=' +
             range.from +
             '&to=' +
             range.to +
