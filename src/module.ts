@@ -143,22 +143,22 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
 
     this.addEditorTab(
       'Options',
-      'public/plugins/natel-discrete-panel-extended/partials/editor.options.html',
+      'public/plugins/natel-discrete-panel/partials/editor.options.html',
       1
     );
     this.addEditorTab(
       'Legend',
-      'public/plugins/natel-discrete-panel-extended/partials/editor.legend.html',
+      'public/plugins/natel-discrete-panel/partials/editor.legend.html',
       3
     );
     this.addEditorTab(
       'Colors',
-      'public/plugins/natel-discrete-panel-extended/partials/editor.colors.html',
+      'public/plugins/natel-discrete-panel/partials/editor.colors.html',
       4
     );
     this.addEditorTab(
       'Mappings',
-      'public/plugins/natel-discrete-panel-extended/partials/editor.mappings.html',
+      'public/plugins/natel-discrete-panel/partials/editor.mappings.html',
       5
     );
     this.editorTabIndex = 1;

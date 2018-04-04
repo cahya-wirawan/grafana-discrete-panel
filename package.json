@@ -1,5 +1,5 @@
 {
-  "name": "natel-discrete-panel-extended",
+  "name": "natel-discrete-panel",
   "version": "0.0.7",
   "description": "Discrete Events in Grafana",
   "scripts": {
@@ -13,7 +13,7 @@
   "keywords": ["discrete", "canvas", "grafana", "plugin", "panel"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/cahya-wirawan/grafana-discrete-panel-extended.git"
+    "url": "https://github.com/cahya-wirawan/grafana-discrete-panel.git"
   },
   "prettier": {
     "singleQuote": true,

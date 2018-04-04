@@ -1,7 +1,7 @@
 {
   "type": "panel",
   "name": "Discrete",
-  "id": "natel-discrete-panel-extended",
+  "id": "natel-discrete-panel",
 
   "info": {
     "description": "Discrete Events grafana",
