@@ -102,14 +102,17 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         colorMaps: [{ text: 'N/A', color: '#CCC' }],
                         metricNameColor: '#000000',
                         valueTextColor: '#000000',
+                        timeTextColor: '#d8d9da',
                         crosshairColor: '#8F070C',
                         backgroundColor: 'rgba(128,128,128,0.1)',
                         lineColor: 'rgba(0,0,0,0.1)',
                         textSize: 24,
+                        textSizeTime: 12,
                         extendLastValue: true,
                         writeLastValue: true,
                         writeAllValues: false,
                         writeMetricNames: false,
+                        showTimeAxis: true,
                         showLegend: true,
                         showLegendNames: true,
                         showLegendValues: true,
@@ -124,7 +127,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     };
                     this.data = null;
                     this.externalPT = false;
-                    this.isTimeline = false;
+                    this.isTimeline = true;
                     this.isStacked = false;
                     this.hoverPoint = null;
                     this.colorMap = {};
@@ -135,14 +138,18 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     this._selectionMatrix = [];
                     // defaults configs
                     lodash_1.default.defaultsDeep(this.panel, this.defaults);
+                    this.panel.display = 'timeline'; // Only supported version now
                     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
                     this.events.on('render', this.onRender.bind(this));
                     this.events.on('data-received', this.onDataReceived.bind(this));
+                    this.events.on('panel-initialized', this.onPanelInitialized.bind(this));
                     this.events.on('data-error', this.onDataError.bind(this));
                     this.events.on('refresh', this.onRefresh.bind(this));
+                }
+                DiscretePanelCtrl.prototype.onPanelInitialized = function () {
                     this.updateColorInfo();
                     this.onConfigChanged();
-                }
+                };
                 DiscretePanelCtrl.prototype.onDataError = function (err) {
                     console.log('onDataError', err);
                 };
@@ -163,6 +170,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     this._updateSelectionMatrix();
                     this._updateCanvasSize();
                     this._renderRects();
+                    this._renderTimeAxis();
                     this._renderLabels();
                     this._renderSelection();
                     this._renderCrosshair();
@@ -341,7 +349,6 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                 };
                 DiscretePanelCtrl.prototype.onConfigChanged = function (update) {
                     if (update === void 0) { update = false; }
-                    //console.log( "Config changed...");
                     this.isTimeline = this.panel.display === 'timeline';
                     this.isStacked = this.panel.display === 'stacked';
                     this.formatter = null;
@@ -511,10 +518,11 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var rect = (this._renderDimensions.rect = this.wrap_parent.getBoundingClientRect());
                     var rows = (this._renderDimensions.rows = this.data.length);
                     var rowHeight = (this._renderDimensions.rowHeight = this.panel.rowHeight);
+                    var rowsHeight = (this._renderDimensions.rowsHeight = rowHeight * rows);
                     this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
-                    var height = (this._renderDimensions.height = rowHeight * rows);
+                    var timeHeight = this.panel.showTimeAxis ? 14 + this.panel.textSizeTime : 0;
+                    var height = (this._renderDimensions.height = rowsHeight + timeHeight);
                     var width = (this._renderDimensions.width = rect.width - this.rowselWidth);
-                    var rectHeight = (this._renderDimensions.rectHeight = rowHeight);
                     var top = 0;
                     var elapsed = this.range.to - this.range.from;
                     this._renderDimensions.matrix = [];
@@ -646,7 +654,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                             if (!_this._selectionMatrix[i][j]) {
                                 ctx.globalAlpha = 0.3;
                             }
-                            ctx.fillRect(currentX, matrix[i].y, nextX - currentX, _this._renderDimensions.rectHeight);
+                            ctx.fillRect(currentX, matrix[i].y, nextX - currentX, _this._renderDimensions.rowHeight);
                             ctx.globalAlpha = globalAlphaTemp;
                         }
                         if (i > 0) {
@@ -666,10 +674,10 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     ctx.textBaseline = 'middle';
                     ctx.font = this.panel.textSize + 'px "Open Sans", Helvetica, Arial, sans-serif';
                     var offset = 2;
-                    var rectHeight = this._renderDimensions.rectHeight;
+                    var rowHeight = this._renderDimensions.rowHeight;
                     lodash_1.default.forEach(this.data, function (metric, i) {
                         var _a = _this._renderDimensions.matrix[i], y = _a.y, positions = _a.positions;
-                        var centerY = y + rectHeight / 2;
+                        var centerY = y + rowHeight / 2;
                         // let labelPositionMetricName = y + rectHeight - this.panel.textSize / 2;
                         // let labelPositionLastValue = y + rectHeight - this.panel.textSize / 2;
                         // let labelPositionValue = y + this.panel.textSize / 2;
@@ -688,18 +696,21 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                                         hoverTextStart = positions[j] + offset;
                                         ctx.fillText(val, hoverTextStart, labelPositionValue);
                                         var txtinfo = ctx.measureText(val);
-                                        hoverTextEnd = hoverTextStart + txtinfo.width;
+                                        hoverTextEnd = hoverTextStart + txtinfo.width + 4;
                                         break;
                                     }
                                 }
                             }
                         }
+                        var minTextSpot = 0;
+                        var maxTextSpot = _this._renderDimensions.width;
                         if (_this.panel.writeMetricNames) {
                             ctx.fillStyle = _this.panel.metricNameColor;
                             ctx.textAlign = 'left';
                             var txtinfo = ctx.measureText(metric.name);
                             if (hoverTextStart < 0 || hoverTextStart > txtinfo.width) {
                                 ctx.fillText(metric.name, offset, labelPositionMetricName);
+                                minTextSpot = offset + ctx.measureText(metric.name).width + 2;
                             }
                         }
                         if (_this.panel.writeLastValue) {
@@ -710,6 +721,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                             var xval = _this._renderDimensions.width - offset - txtinfo.width;
                             if (xval > hoverTextEnd) {
                                 ctx.fillText(val, _this._renderDimensions.width - offset, labelPositionLastValue);
+                                maxTextSpot = _this._renderDimensions.width - ctx.measureText(val).width - 10;
                             }
                         }
                         if (_this.panel.writeAllValues) {
@@ -721,13 +733,18 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                                 if (j + 1 !== positions.length) {
                                     nextX = positions[j + 1];
                                 }
-                                var width = nextX - positions[j];
-                                // This clips the text within the given bounds
-                                ctx.save();
-                                ctx.rect(positions[j], y, width, rectHeight);
-                                ctx.clip();
-                                ctx.fillText(val, positions[j] + offset, labelPositionValue);
-                                ctx.restore();
+                                var x = positions[j];
+                                if (x > minTextSpot) {
+                                    var width = nextX - x;
+                                    if (maxTextSpot > x + width) {
+                                        // This clips the text within the given bounds
+                                        ctx.save();
+                                        ctx.rect(x, y, width, rowHeight);
+                                        ctx.clip();
+                                        ctx.fillText(val, x + offset, labelPositionValue);
+                                        ctx.restore();
+                                    }
+                                }
                             }
                         }
                     });
@@ -752,6 +769,50 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     ctx.fillRect(xmin, 0, xmax - xmin, height);
                     ctx.strokeRect(xmin, 0, xmax - xmin, height);
                 };
+                DiscretePanelCtrl.prototype._renderTimeAxis = function () {
+                    if (!this.panel.showTimeAxis) {
+                        return;
+                    }
+                    var ctx = this.context;
+                    var rows = this.data.length;
+                    var rowHeight = this.panel.rowHeight;
+                    var height = this._renderDimensions.height;
+                    var width = this._renderDimensions.width;
+                    var top = this._renderDimensions.rowsHeight;
+                    var headerColumnIndent = 0; // header inset (zero for now)
+                    ctx.font = this.panel.textSizeTime + 'px "Open Sans", Helvetica, Arial, sans-serif';
+                    ctx.fillStyle = this.panel.timeTextColor;
+                    ctx.textAlign = 'left';
+                    ctx.strokeStyle = this.panel.timeTextColor;
+                    ctx.textBaseline = 'top';
+                    ctx.setLineDash([7, 5]); // dashes are 5px and spaces are 3px
+                    ctx.lineDashOffset = 0;
+                    var min = lodash_1.default.isUndefined(this.range.from) ? null : this.range.from.valueOf();
+                    var max = lodash_1.default.isUndefined(this.range.to) ? null : this.range.to.valueOf();
+                    var minPxInterval = ctx.measureText('12/33 24:59').width * 2;
+                    var estNumTicks = width / minPxInterval;
+                    var estTimeInterval = (max - min) / estNumTicks;
+                    var timeResolution = this.getTimeResolution(estTimeInterval);
+                    var pixelStep = timeResolution / (max - min) * width;
+                    var nextPointInTime = this.roundDate(min, timeResolution) + timeResolution;
+                    var xPos = headerColumnIndent + (nextPointInTime - min) / (max - min) * width;
+                    var timeFormat = this.time_format(max - min, timeResolution / 1000);
+                    while (nextPointInTime < max) {
+                        // draw ticks
+                        ctx.beginPath();
+                        ctx.moveTo(xPos, top + 5);
+                        ctx.lineTo(xPos, 0);
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                        // draw time label
+                        var date = new Date(nextPointInTime);
+                        var dateStr = this.formatDate(date, timeFormat);
+                        var xOffset = ctx.measureText(dateStr).width / 2;
+                        ctx.fillText(dateStr, xPos - xOffset, top + 10);
+                        nextPointInTime += timeResolution;
+                        xPos += pixelStep;
+                    }
+                };
                 DiscretePanelCtrl.prototype._renderCrosshair = function () {
                     if (this.mouse.down != null) {
                         return;
@@ -770,6 +831,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     ctx.moveTo(this.mouse.position.x, 0);
                     ctx.lineTo(this.mouse.position.x, height);
                     ctx.strokeStyle = this.panel.crosshairColor;
+                    ctx.setLineDash([]);
                     ctx.lineWidth = 1;
                     ctx.stroke();
                     // Draw a Circle around the point if showing a tooltip
@@ -794,6 +856,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var rowselParent = this.rowsel.parentNode;
                     var width = this.rowselWidth;
                     jquery_1.default(rowselParent).css('width', width + 'px');
+                    jquery_1.default(rowselParent).css('padding-bottom', width + 'px');
                     lodash_1.default.forEach(this.data, function (metric, i) {
                         var tr = document.createElement('tr');
                         jquery_1.default(tr).css('height', _this.panel.rowHeight + 'px');
