@@ -34,7 +34,7 @@ yarn pretty
 
 ##### v0.0.9
 
-* Add button with links to each rows (see the first picture above). The size of the button will be scaled automatically 
+* Add button with links to each rows (see the first picture above). The size of the button will be scaled automatically
   based on the height of the row. The URL is to define in the options tab.
 
 ##### v0.0.8 (not released yet)
