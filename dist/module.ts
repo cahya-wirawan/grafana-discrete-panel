@@ -961,7 +961,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     let width = this.rowselWidth;
 
     $(rowselParent).css('width', width + 'px');
-    $(rowselParent).css('padding-bottom', width + 'px');
+    $(rowselParent).css('padding-bottom', this.panel.showTimeAxis ? width : 0 + 'px');
     _.forEach(this.data, (metric, i) => {
       let tr = document.createElement('tr');
       $(tr).css('height', this.panel.rowHeight + 'px');

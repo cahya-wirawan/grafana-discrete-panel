@@ -856,7 +856,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var rowselParent = this.rowsel.parentNode;
                     var width = this.rowselWidth;
                     jquery_1.default(rowselParent).css('width', width + 'px');
-                    jquery_1.default(rowselParent).css('padding-bottom', width + 'px');
+                    jquery_1.default(rowselParent).css('padding-bottom', this.panel.showTimeAxis ? width : 0 + 'px');
                     lodash_1.default.forEach(this.data, function (metric, i) {
                         var tr = document.createElement('tr');
                         jquery_1.default(tr).css('height', _this.panel.rowHeight + 'px');
