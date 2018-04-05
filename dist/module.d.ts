@@ -42,8 +42,10 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
         expandFromQueryS: number;
         legendSortBy: string;
         units: string;
+        rowSelectorType: string;
         rowSelectorURL: string;
         rowSelectorURLParam: string;
+        rowSelectorWidth: number;
     };
     data: any;
     externalPT: boolean;
@@ -56,6 +58,7 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
     formatter: any;
     _renderDimensions: any;
     _selectionMatrix: Array<Array<String>>;
+    rowselWidth: number;
     constructor($scope: any, $injector: any);
     onPanelInitialized(): void;
     onDataError(err: any): void;

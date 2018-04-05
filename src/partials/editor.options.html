@@ -90,16 +90,28 @@
 
     <div class="section gf-form-group">
         <h5 class="section-heading">Drilldown on Row</h5>
+        <div class="gf-form max-width-25">
+            <span class="gf-form-label width-6">Type</span>
+            <div class="gf-form-select-wrapper gf-form--grow">
+                <select class="gf-form-input" ng-model="ctrl.panel.rowSelectorType"
+                        ng-options="f for f in ['button','text']" ng-blur="ctrl.render()"></select>
+            </div>
+        </div>
+
         <div class="gf-form">
             <label class="gf-form-label width-6">Url
                 <info-popover mode="right-normal">This will open a new window/tab with the base url defined here</info-popover>
             </label>
-            <input type="string" ng-model="ctrl.panel.rowSelectorURL" class="gf-form-input max-width-15" ng-blur="ctrl.onConfigChanged()" />
+            <input type="string" ng-model="ctrl.panel.rowSelectorURL" class="gf-form-input max-width-20" ng-blur="ctrl.onConfigChanged()" />
         </div>
         <div class="gf-form">
             <label class="gf-form-label width-6">Url param
             </label>
-            <input type="string" ng-model="ctrl.panel.rowSelectorURLParam" class="gf-form-input max-width-15" ng-blur="ctrl.onConfigChanged()" />
+            <input type="string" ng-model="ctrl.panel.rowSelectorURLParam" class="gf-form-input max-width-20" ng-blur="ctrl.onConfigChanged()" />
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-6">Text Width</label>
+            <input type="number" ng-model="ctrl.panel.rowSelectorWidth" class="gf-form-input max-width-20" ng-blur="ctrl.render()"/>
         </div>
     </div>
 

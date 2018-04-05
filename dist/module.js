@@ -122,8 +122,10 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         expandFromQueryS: 0,
                         legendSortBy: '-ms',
                         units: 'short',
+                        rowSelectorType: 'button',
                         rowSelectorURL: '',
                         rowSelectorURLParam: '',
+                        rowSelectorWidth: 60,
                     };
                     this.data = null;
                     this.externalPT = false;
@@ -136,6 +138,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     this.formatter = null;
                     this._renderDimensions = {};
                     this._selectionMatrix = [];
+                    this.rowselWidth = 0;
                     // defaults configs
                     lodash_1.default.defaultsDeep(this.panel, this.defaults);
                     this.panel.display = 'timeline'; // Only supported version now
@@ -519,7 +522,12 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var rows = (this._renderDimensions.rows = this.data.length);
                     var rowHeight = (this._renderDimensions.rowHeight = this.panel.rowHeight);
                     var rowsHeight = (this._renderDimensions.rowsHeight = rowHeight * rows);
-                    this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
+                    if (this.panel.rowSelectorType == "button") {
+                        this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
+                    }
+                    else {
+                        this.rowselWidth = this.panel.rowSelectorWidth;
+                    }
                     var timeHeight = this.panel.showTimeAxis ? 14 + this.panel.textSizeTime : 0;
                     var height = (this._renderDimensions.height = rowsHeight + timeHeight);
                     var width = (this._renderDimensions.width = rect.width - this.rowselWidth);
@@ -856,16 +864,34 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var rowselParent = this.rowsel.parentNode;
                     var width = this.rowselWidth;
                     jquery_1.default(rowselParent).css('width', width + 'px');
-                    jquery_1.default(rowselParent).css('padding-bottom', this.panel.showTimeAxis ? width : 0 + 'px');
+                    var timeAxisHeight = this.panel.showTimeAxis ? 14 + this.panel.textSizeTime : 0;
+                    if (panel.rowSelectorType == "button") {
+                        jquery_1.default(rowselParent).css('padding-bottom', this.panel.showTimeAxis ? timeAxisHeight : 0 + 'px');
+                    }
+                    else {
+                        jquery_1.default(rowselParent).css('padding-bottom', timeAxisHeight + 'px');
+                    }
                     lodash_1.default.forEach(this.data, function (metric, i) {
                         var tr = document.createElement('tr');
                         jquery_1.default(tr).css('height', _this.panel.rowHeight + 'px');
-                        jquery_1.default(tr).css('background-size', width - 8 + 'px ' + (width - 8) + 'px');
+                        jquery_1.default(tr).css('line-height', _this.panel.rowHeight + 'px');
+                        jquery_1.default(tr).css('font-size', _this.panel.textSize + 'px');
+                        if (panel.rowSelectorType == "button") {
+                            tr.classList.add("selection-button");
+                            jquery_1.default(tr).css('background-size', width - 8 + 'px ' + (width - 8) + 'px');
+                        }
+                        else {
+                            // tr.textContent = metric.name;
+                            var span = document.createElement('span');
+                            span.textContent = metric.name;
+                            tr.appendChild(span);
+                        }
+                        var positionInfo = tr.getBoundingClientRect();
                         tr.title = metric.name;
                         //tr.setAttribute("class", "hvr-border-fade");
-                        table_select.appendChild(tr);
-                        var td = document.createElement('td');
-                        td.addEventListener('click', function () {
+                        //table_select.appendChild(tr);
+                        //let td = document.createElement('td');
+                        tr.addEventListener('click', function () {
                             if (panel.rowSelectorURL != '') {
                                 // if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
                                 //   panel.rowSelectorURL += '/';
@@ -882,8 +908,9 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                                 window.open(url, '_blank');
                             }
                         });
-                        tr.appendChild(td);
+                        table_select.appendChild(tr);
                     });
+                    this.rowselWidth = table_select.offsetWidth;
                 };
                 DiscretePanelCtrl.templateUrl = 'partials/module.html';
                 DiscretePanelCtrl.scrollable = true;
