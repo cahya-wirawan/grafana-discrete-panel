@@ -913,7 +913,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         });
                         table_select.appendChild(tr);
                     });
-                    if (this.panel.rowSelectorType == "text") {
+                    if (this.panel.rowSelectorType == 'text') {
                     }
                 };
                 DiscretePanelCtrl.templateUrl = 'partials/module.html';
