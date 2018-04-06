@@ -574,10 +574,9 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     const rows = (this._renderDimensions.rows = this.data.length);
     const rowHeight = (this._renderDimensions.rowHeight = this.panel.rowHeight);
     const rowsHeight = (this._renderDimensions.rowsHeight = rowHeight * rows);
-    if(this.panel.rowSelectorType == "button") {
+    if (this.panel.rowSelectorType == 'button') {
       this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
-    }
-    else {
+    } else {
       this.rowselWidth = this.panel.rowSelectorWidth;
     }
     const timeHeight = this.panel.showTimeAxis ? 14 + this.panel.textSizeTime : 0;
@@ -970,11 +969,13 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
 
     $(rowselParent).css('width', width + 'px');
     let timeAxisHeight = this.panel.showTimeAxis ? 14 + this.panel.textSizeTime : 0;
-    if(panel.rowSelectorType == "button") {
-        $(rowselParent).css('padding-bottom', this.panel.showTimeAxis ? timeAxisHeight : 0 + 'px');
-    }
-    else {
-        $(rowselParent).css('padding-bottom', timeAxisHeight + 'px');
+    if (panel.rowSelectorType == 'button') {
+      $(rowselParent).css(
+        'padding-bottom',
+        this.panel.showTimeAxis ? timeAxisHeight : 0 + 'px'
+      );
+    } else {
+      $(rowselParent).css('padding-bottom', timeAxisHeight + 'px');
     }
 
     _.forEach(this.data, (metric, i) => {
@@ -982,22 +983,21 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       $(tr).css('height', this.panel.rowHeight + 'px');
       $(tr).css('line-height', this.panel.rowHeight + 'px');
       $(tr).css('font-size', this.panel.textSize + 'px');
-      if(panel.rowSelectorType == "button") {
-        tr.classList.add("selection-button");
+      if (panel.rowSelectorType == 'button') {
+        tr.classList.add('selection-button');
         $(tr).css('background-size', width - 8 + 'px ' + (width - 8) + 'px');
-      }
-      else {
+      } else {
         // tr.textContent = metric.name;
         let span = document.createElement('span');
         span.textContent = metric.name;
         tr.appendChild(span);
-        // tr.classList.add("hvr-border-fade")
       }
       let positionInfo = tr.getBoundingClientRect();
       tr.title = metric.name;
       //tr.setAttribute("class", "hvr-border-fade");
       //table_select.appendChild(tr);
-      //let td = document.createElement('td');
+      let td = document.createElement('td');
+      tr.appendChild(td);
       tr.addEventListener('click', function() {
         if (panel.rowSelectorURL != '') {
           // if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {

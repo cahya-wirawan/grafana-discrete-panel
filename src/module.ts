@@ -991,13 +991,13 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
         let span = document.createElement('span');
         span.textContent = metric.name;
         tr.appendChild(span);
-        // tr.classList.add("hvr-border-fade")
       }
       let positionInfo = tr.getBoundingClientRect();
       tr.title = metric.name;
       //tr.setAttribute("class", "hvr-border-fade");
       //table_select.appendChild(tr);
-      //let td = document.createElement('td');
+      let td = document.createElement('td');
+      tr.appendChild(td);
       tr.addEventListener('click', function() {
         if (panel.rowSelectorURL != '') {
           // if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
