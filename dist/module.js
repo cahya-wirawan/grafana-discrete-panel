@@ -122,7 +122,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         expandFromQueryS: 0,
                         legendSortBy: '-ms',
                         units: 'short',
-                        rowSelectorType: 'button',
+                        rowSelectorType: 'text',
                         rowSelectorURL: '',
                         rowSelectorURLParam: '',
                         rowSelectorWidth: 60,
@@ -413,13 +413,14 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var to = point.start + point.ms;
                     var time = point.ms;
                     var val = point.val;
+                    var name = point.name;
                     if (this.mouse.down != null) {
                         from = Math.min(this.mouse.down.ts, this.mouse.position.ts);
                         to = Math.max(this.mouse.down.ts, this.mouse.position.ts);
                         time = to - from;
                         val = 'Zoom To:';
                     }
-                    var body = '<div class="graph-tooltip-time">' + val + '</div>';
+                    var body = '<div class="graph-tooltip-time">' + name + ": " + val + '</div>';
                     body += '<center>';
                     body += this.dashboard.formatDate(moment_1.default(from)) + '<br/>';
                     body += 'to<br/>';
@@ -466,6 +467,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                                 }
                                 hover = this.data[j].changes[i];
                             }
+                            hover["name"] = this.data[j].name;
                             this.hoverPoint = hover;
                             if (showTT) {
                                 this.externalPT = isExternal;

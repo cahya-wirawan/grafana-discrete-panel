@@ -104,7 +104,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     expandFromQueryS: 0,
     legendSortBy: '-ms',
     units: 'short',
-    rowSelectorType: 'button',
+    rowSelectorType: 'text',
     rowSelectorURL: '',
     rowSelectorURLParam: '',
     rowSelectorWidth: 60,
@@ -454,6 +454,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     let to = point.start + point.ms;
     let time = point.ms;
     let val = point.val;
+    let name = point.name;
 
     if (this.mouse.down != null) {
       from = Math.min(this.mouse.down.ts, this.mouse.position.ts);
@@ -462,7 +463,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       val = 'Zoom To:';
     }
 
-    let body = '<div class="graph-tooltip-time">' + val + '</div>';
+    let body = '<div class="graph-tooltip-time">' + name + ": " + val + '</div>';
 
     body += '<center>';
     body += this.dashboard.formatDate(moment(from)) + '<br/>';
@@ -514,6 +515,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
           }
           hover = this.data[j].changes[i];
         }
+        hover["name"] = this.data[j].name;
         this.hoverPoint = hover;
 
         if (showTT) {
