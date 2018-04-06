@@ -1020,7 +1020,10 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       });
       table_select.appendChild(tr);
     });
-    this.rowselWidth = table_select.offsetWidth;
+    if (this.panel.rowSelectorType == 'text') {
+      // this.rowselWidth = table_select.offsetWidth;
+      // this.panel.rowSelectorWidth = table_select.offsetWidth;
+    }
   }
 }
 

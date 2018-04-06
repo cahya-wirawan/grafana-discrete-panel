@@ -420,7 +420,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         time = to - from;
                         val = 'Zoom To:';
                     }
-                    var body = '<div class="graph-tooltip-time">' + name + ": " + val + '</div>';
+                    var body = '<div class="graph-tooltip-time">' + name + ': ' + val + '</div>';
                     body += '<center>';
                     body += this.dashboard.formatDate(moment_1.default(from)) + '<br/>';
                     body += 'to<br/>';
@@ -467,7 +467,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                                 }
                                 hover = this.data[j].changes[i];
                             }
-                            hover["name"] = this.data[j].name;
+                            hover['name'] = this.data[j].name;
                             this.hoverPoint = hover;
                             if (showTT) {
                                 this.externalPT = isExternal;
@@ -913,7 +913,8 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         });
                         table_select.appendChild(tr);
                     });
-                    this.rowselWidth = table_select.offsetWidth;
+                    if (this.panel.rowSelectorType == "text") {
+                    }
                 };
                 DiscretePanelCtrl.templateUrl = 'partials/module.html';
                 DiscretePanelCtrl.scrollable = true;

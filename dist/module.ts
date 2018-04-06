@@ -463,7 +463,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       val = 'Zoom To:';
     }
 
-    let body = '<div class="graph-tooltip-time">' + name + ": " + val + '</div>';
+    let body = '<div class="graph-tooltip-time">' + name + ': ' + val + '</div>';
 
     body += '<center>';
     body += this.dashboard.formatDate(moment(from)) + '<br/>';
@@ -515,7 +515,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
           }
           hover = this.data[j].changes[i];
         }
-        hover["name"] = this.data[j].name;
+        hover['name'] = this.data[j].name;
         this.hoverPoint = hover;
 
         if (showTT) {
@@ -1020,7 +1020,10 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       });
       table_select.appendChild(tr);
     });
-    this.rowselWidth = table_select.offsetWidth;
+    if(this.panel.rowSelectorType == "text") {
+      // this.rowselWidth = table_select.offsetWidth;
+      // this.panel.rowSelectorWidth = table_select.offsetWidth;
+    }
   }
 }
 
