@@ -78,7 +78,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
 
   defaults = {
     display: 'timeline', // or 'stacked'
-    rowHeight: 50,
+    rowHeight: 20,
     valueMaps: [{value: 'null', op: '=', text: 'N/A'}],
     rangeMaps: [{from: 'null', to: 'null', text: 'N/A'}],
     colorMaps: [{text: 'N/A', color: '#CCC'}],
@@ -88,7 +88,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     crosshairColor: '#8F070C',
     backgroundColor: 'rgba(128,128,128,0.1)',
     lineColor: 'rgba(0,0,0,0.1)',
-    textSize: 24,
+    textSize: 12,
     textSizeTime: 12,
     extendLastValue: true,
     writeLastValue: true,
@@ -107,7 +107,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     rowSelectorType: 'text',
     rowSelectorURL: '',
     rowSelectorURLParam: '',
-    rowSelectorWidth: 60,
+    rowSelectorWidth: 80,
   };
 
   data: any = null;

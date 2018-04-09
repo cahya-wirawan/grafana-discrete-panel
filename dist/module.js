@@ -96,7 +96,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     _super.call(this, $scope, $injector);
                     this.defaults = {
                         display: 'timeline',
-                        rowHeight: 50,
+                        rowHeight: 20,
                         valueMaps: [{ value: 'null', op: '=', text: 'N/A' }],
                         rangeMaps: [{ from: 'null', to: 'null', text: 'N/A' }],
                         colorMaps: [{ text: 'N/A', color: '#CCC' }],
@@ -106,7 +106,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         crosshairColor: '#8F070C',
                         backgroundColor: 'rgba(128,128,128,0.1)',
                         lineColor: 'rgba(0,0,0,0.1)',
-                        textSize: 24,
+                        textSize: 12,
                         textSizeTime: 12,
                         extendLastValue: true,
                         writeLastValue: true,
@@ -125,7 +125,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         rowSelectorType: 'text',
                         rowSelectorURL: '',
                         rowSelectorURLParam: '',
-                        rowSelectorWidth: 60,
+                        rowSelectorWidth: 80,
                     };
                     this.data = null;
                     this.externalPT = false;
