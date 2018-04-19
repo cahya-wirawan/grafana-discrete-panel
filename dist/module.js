@@ -111,7 +111,9 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         extendLastValue: true,
                         writeLastValue: true,
                         writeAllValues: false,
+                        writeValuesOnHover: false,
                         writeMetricNames: false,
+                        writeMetricNamesRight: false,
                         showTimeAxis: true,
                         showLegend: true,
                         showLegendNames: true,
@@ -126,6 +128,8 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         rowSelectorURL: '',
                         rowSelectorURLParam: '',
                         rowSelectorWidth: 80,
+                        onMouseClickZoom: false,
+                        onMouseClickShortRange: true,
                     };
                     this.data = null;
                     this.externalPT = false;
@@ -499,10 +503,25 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                 };
                 DiscretePanelCtrl.prototype.onMouseClicked = function (where) {
                     var pt = this.hoverPoint;
-                    if (pt && pt.start) {
-                        var range = { from: moment_1.default.utc(pt.start), to: moment_1.default.utc(pt.start + pt.ms) };
-                        this.timeSrv.setTime(range);
-                        this.clear();
+                    if (this.panel.onMouseClickZoom) {
+                        if (pt && pt.start) {
+                            var range = { from: moment_1.default.utc(pt.start), to: moment_1.default.utc(pt.start + pt.ms) };
+                            this.timeSrv.setTime(range);
+                            this.clear();
+                        }
+                    }
+                    else {
+                        var from;
+                        var to;
+                        if (this.panel.onMouseClickShortRange) {
+                            from = moment_1.default.utc(pt.start);
+                            to = moment_1.default.utc(pt.start + pt.ms);
+                        }
+                        else {
+                            from = this.range.from;
+                            to = this.range.to;
+                        }
+                        this._windowOpen(this.panel.rowSelectorURL, from, to, this.panel.rowSelectorURLParam, pt.name);
                     }
                 };
                 DiscretePanelCtrl.prototype.onMouseSelectedRange = function (range) {
@@ -696,7 +715,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         var labelPositionValue = centerY;
                         var hoverTextStart = -1;
                         var hoverTextEnd = -1;
-                        if (_this.mouse.position) {
+                        if (_this.mouse.position && _this.panel.writeValuesOnHover) {
                             for (var j = 0; j < positions.length; j++) {
                                 if (positions[j] <= _this.mouse.position.x) {
                                     if (j >= positions.length - 1 || positions[j + 1] >= _this.mouse.position.x) {
@@ -715,15 +734,26 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         var minTextSpot = 0;
                         var maxTextSpot = _this._renderDimensions.width;
                         if (_this.panel.writeMetricNames) {
-                            ctx.fillStyle = _this.panel.metricNameColor;
-                            ctx.textAlign = 'left';
-                            var txtinfo = ctx.measureText(metric.name);
-                            if (hoverTextStart < 0 || hoverTextStart > txtinfo.width) {
-                                ctx.fillText(metric.name, offset, labelPositionMetricName);
-                                minTextSpot = offset + ctx.measureText(metric.name).width + 2;
+                            if (_this.panel.writeMetricNamesRight) {
+                                ctx.fillStyle = _this.panel.metricNameColor;
+                                ctx.textAlign = 'right';
+                                var txtinfo = ctx.measureText(metric.name);
+                                if (hoverTextStart < 0 || hoverTextStart > txtinfo.width) {
+                                    ctx.fillText(metric.name, _this._renderDimensions.width - offset, labelPositionMetricName);
+                                    maxTextSpot = _this._renderDimensions.width - txtinfo.width - 10;
+                                }
+                            }
+                            else {
+                                ctx.fillStyle = _this.panel.metricNameColor;
+                                ctx.textAlign = 'left';
+                                var txtinfo = ctx.measureText(metric.name);
+                                if (hoverTextStart < 0 || hoverTextStart > txtinfo.width) {
+                                    ctx.fillText(metric.name, offset, labelPositionMetricName);
+                                    minTextSpot = offset + ctx.measureText(metric.name).width + 2;
+                                }
                             }
                         }
-                        if (_this.panel.writeLastValue) {
+                        if (_this.panel.writeLastValue && !_this.panel.writeMetricNamesRight) {
                             var val = _this._getVal(i, positions.length - 1);
                             ctx.fillStyle = _this.panel.valueTextColor;
                             ctx.textAlign = 'right';
@@ -899,22 +929,17 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                                 // if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
                                 //   panel.rowSelectorURL += '/';
                                 // }
-                                var url = panel.rowSelectorURL +
-                                    '?from=' +
-                                    range.from +
-                                    '&to=' +
-                                    range.to +
-                                    '&' +
-                                    panel.rowSelectorURLParam +
-                                    '=' +
-                                    metric.name;
-                                window.open(url, '_blank');
+                                this._windowOpen(panel.rowSelectorURL, range.from, range.to, panel.rowSelectorURLParam, metric.name);
                             }
                         });
                         table_select.appendChild(tr);
                     });
                     if (this.panel.rowSelectorType == 'text') {
                     }
+                };
+                DiscretePanelCtrl.prototype._windowOpen = function (baseURL, from, to, paramKey, paramValue) {
+                    var url = baseURL + '?from=' + from + '&to=' + to + '&' + paramKey + '=' + paramValue;
+                    window.open(url, '_blank');
                 };
                 DiscretePanelCtrl.templateUrl = 'partials/module.html';
                 DiscretePanelCtrl.scrollable = true;

@@ -93,7 +93,9 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     extendLastValue: true,
     writeLastValue: true,
     writeAllValues: false,
+    writeValuesOnHover: false,
     writeMetricNames: false,
+    writeMetricNamesRight: false,
     showTimeAxis: true,
     showLegend: true,
     showLegendNames: true,
@@ -108,6 +110,8 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     rowSelectorURL: '',
     rowSelectorURLParam: '',
     rowSelectorWidth: 80,
+    onMouseClickZoom: false,
+    onMouseClickShortRange: true,
   };
 
   data: any = null;
@@ -548,10 +552,29 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
 
   onMouseClicked(where) {
     let pt = this.hoverPoint;
-    if (pt && pt.start) {
-      let range = {from: moment.utc(pt.start), to: moment.utc(pt.start + pt.ms)};
-      this.timeSrv.setTime(range);
-      this.clear();
+    if (this.panel.onMouseClickZoom) {
+      if (pt && pt.start) {
+        let range = {from: moment.utc(pt.start), to: moment.utc(pt.start + pt.ms)};
+        this.timeSrv.setTime(range);
+        this.clear();
+      }
+    } else {
+      let from;
+      let to;
+      if (this.panel.onMouseClickShortRange) {
+        from = moment.utc(pt.start);
+        to = moment.utc(pt.start + pt.ms);
+      } else {
+        from = this.range.from;
+        to = this.range.to;
+      }
+      this._windowOpen(
+        this.panel.rowSelectorURL,
+        from,
+        to,
+        this.panel.rowSelectorURLParam,
+        pt.name
+      );
     }
   }
 
@@ -774,7 +797,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       let hoverTextStart = -1;
       let hoverTextEnd = -1;
 
-      if (this.mouse.position) {
+      if (this.mouse.position && this.panel.writeValuesOnHover) {
         for (let j = 0; j < positions.length; j++) {
           if (positions[j] <= this.mouse.position.x) {
             if (j >= positions.length - 1 || positions[j + 1] >= this.mouse.position.x) {
@@ -794,15 +817,29 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       let minTextSpot = 0;
       let maxTextSpot = this._renderDimensions.width;
       if (this.panel.writeMetricNames) {
-        ctx.fillStyle = this.panel.metricNameColor;
-        ctx.textAlign = 'left';
-        const txtinfo = ctx.measureText(metric.name);
-        if (hoverTextStart < 0 || hoverTextStart > txtinfo.width) {
-          ctx.fillText(metric.name, offset, labelPositionMetricName);
-          minTextSpot = offset + ctx.measureText(metric.name).width + 2;
+        if (this.panel.writeMetricNamesRight) {
+          ctx.fillStyle = this.panel.metricNameColor;
+          ctx.textAlign = 'right';
+          const txtinfo = ctx.measureText(metric.name);
+          if (hoverTextStart < 0 || hoverTextStart > txtinfo.width) {
+            ctx.fillText(
+              metric.name,
+              this._renderDimensions.width - offset,
+              labelPositionMetricName
+            );
+            maxTextSpot = this._renderDimensions.width - txtinfo.width - 10;
+          }
+        } else {
+          ctx.fillStyle = this.panel.metricNameColor;
+          ctx.textAlign = 'left';
+          const txtinfo = ctx.measureText(metric.name);
+          if (hoverTextStart < 0 || hoverTextStart > txtinfo.width) {
+            ctx.fillText(metric.name, offset, labelPositionMetricName);
+            minTextSpot = offset + ctx.measureText(metric.name).width + 2;
+          }
         }
       }
-      if (this.panel.writeLastValue) {
+      if (this.panel.writeLastValue && !this.panel.writeMetricNamesRight) {
         let val = this._getVal(i, positions.length - 1);
         ctx.fillStyle = this.panel.valueTextColor;
         ctx.textAlign = 'right';
@@ -1005,17 +1042,13 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
           // if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
           //   panel.rowSelectorURL += '/';
           // }
-          let url =
-            panel.rowSelectorURL +
-            '?from=' +
-            range.from +
-            '&to=' +
-            range.to +
-            '&' +
-            panel.rowSelectorURLParam +
-            '=' +
-            metric.name;
-          window.open(url, '_blank');
+          this._windowOpen(
+            panel.rowSelectorURL,
+            range.from,
+            range.to,
+            panel.rowSelectorURLParam,
+            metric.name
+          );
         }
       });
       table_select.appendChild(tr);
@@ -1024,6 +1057,11 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       // this.rowselWidth = table_select.offsetWidth;
       // this.panel.rowSelectorWidth = table_select.offsetWidth;
     }
+  }
+
+  _windowOpen(baseURL, from, to, paramKey, paramValue) {
+    let url = baseURL + '?from=' + from + '&to=' + to + '&' + paramKey + '=' + paramValue;
+    window.open(url, '_blank');
   }
 }
 

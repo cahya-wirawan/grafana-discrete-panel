@@ -61,10 +61,22 @@
           on-change="ctrl.onConfigChanged()"></gf-form-switch>
 
         <gf-form-switch class="gf-form"
+                        label="Metric Names on Right Side"
+                        label-class="gf-form-label width-14"
+                        checked="ctrl.panel.writeMetricNamesRight"
+                        on-change="ctrl.onConfigChanged()"></gf-form-switch>
+
+        <gf-form-switch class="gf-form"
           label="Write All Values"
           label-class="gf-form-label width-14"
           checked="ctrl.panel.writeAllValues"
           on-change="ctrl.onConfigChanged()"></gf-form-switch>
+
+        <gf-form-switch class="gf-form"
+                        label="Write Values On Hover"
+                        label-class="gf-form-label width-14"
+                        checked="ctrl.panel.writeValuesOnHover"
+                        on-change="ctrl.onConfigChanged()"></gf-form-switch>
 
     </div>
 
@@ -113,6 +125,18 @@
             <label class="gf-form-label width-6">Text Width</label>
             <input type="number" ng-model="ctrl.panel.rowSelectorWidth" class="gf-form-input max-width-20" ng-blur="ctrl.render()"/>
         </div>
+        <gf-form-switch class="gf-form"
+                        label="Zoom on Mouse Click"
+                        label-class="gf-form-label width-16"
+                        checked="ctrl.panel.onMouseClickZoom"
+                        on-change="ctrl.onConfigChanged()">
+        </gf-form-switch>
+        <gf-form-switch class="gf-form"
+                        label="Short Time Range on Mouse Click"
+                        label-class="gf-form-label width-16"
+                        checked="ctrl.panel.onMouseClickShortRange"
+                        on-change="ctrl.onConfigChanged()">
+        </gf-form-switch>
     </div>
 
 </div>

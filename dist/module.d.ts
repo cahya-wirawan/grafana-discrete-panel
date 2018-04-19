@@ -31,7 +31,9 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
         extendLastValue: boolean;
         writeLastValue: boolean;
         writeAllValues: boolean;
+        writeValuesOnHover: boolean;
         writeMetricNames: boolean;
+        writeMetricNamesRight: boolean;
         showTimeAxis: boolean;
         showLegend: boolean;
         showLegendNames: boolean;
@@ -46,6 +48,8 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
         rowSelectorURL: string;
         rowSelectorURLParam: string;
         rowSelectorWidth: number;
+        onMouseClickZoom: boolean;
+        onMouseClickShortRange: boolean;
     };
     data: any;
     externalPT: boolean;
@@ -95,5 +99,6 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
     _renderTimeAxis(): void;
     _renderCrosshair(): void;
     _renderRowSelection(): void;
+    _windowOpen(baseURL: any, from: any, to: any, paramKey: any, paramValue: any): void;
 }
 export { DiscretePanelCtrl as PanelCtrl };
