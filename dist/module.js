@@ -543,11 +543,16 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var rows = (this._renderDimensions.rows = this.data.length);
                     var rowHeight = (this._renderDimensions.rowHeight = this.panel.rowHeight);
                     var rowsHeight = (this._renderDimensions.rowsHeight = rowHeight * rows);
-                    if (this.panel.rowSelectorType == 'button') {
-                        this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
-                    }
-                    else {
-                        this.rowselWidth = this.panel.rowSelectorWidth;
+                    switch (this.panel.rowSelectorType) {
+                        case "button":
+                            this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
+                            break;
+                        case "text":
+                            this.rowselWidth = this.panel.rowSelectorWidth;
+                            break;
+                        case "hidden":
+                            this.rowselWidth = 0;
+                            break;
                     }
                     var timeHeight = this.panel.showTimeAxis ? 14 + this.panel.textSizeTime : 0;
                     var height = (this._renderDimensions.height = rowsHeight + timeHeight);
@@ -891,6 +896,8 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var range = this.range;
                     if (this.rowsel.childElementCount != 0)
                         this.rowsel.removeChild(this.rowsel.childNodes[0]);
+                    if (panel.rowSelectorType == 'hidden')
+                        return;
                     var table_select = document.createElement('table');
                     this.rowsel.appendChild(table_select);
                     var rowselParent = this.rowsel.parentNode;

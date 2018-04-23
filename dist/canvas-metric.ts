@@ -155,7 +155,7 @@ export class CanvasPanelCtrl extends MetricsPanelCtrl {
 
   link(scope, elem, attrs, ctrl) {
     this.wrap = elem.find('.canvas-spot')[0];
-    this.wrap_parent = elem.find('.canvas-panel')[0];
+    this.wrap_parent = elem.find('.canvas-panel')[0].parentNode;
     this.canvas = document.createElement('canvas');
     this.wrap.appendChild(this.canvas);
     this.rowsel = elem.find('.row-selection')[0];

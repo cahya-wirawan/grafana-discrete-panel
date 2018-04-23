@@ -552,25 +552,29 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
 
   onMouseClicked(where) {
     let pt = this.hoverPoint;
-    if(this.panel.onMouseClickZoom) {
+    if (this.panel.onMouseClickZoom) {
       if (pt && pt.start) {
         let range = {from: moment.utc(pt.start), to: moment.utc(pt.start + pt.ms)};
         this.timeSrv.setTime(range);
         this.clear();
       }
-    }
-    else {
-        let from;
-        let to;
-        if(this.panel.onMouseClickShortRange) {
-            from = moment.utc(pt.start);
-            to = moment.utc(pt.start + pt.ms);
-        } else {
-            from = this.range.from;
-            to = this.range.to;
-        }
-        this._windowOpen(this.panel.rowSelectorURL, from, to,
-            this.panel.rowSelectorURLParam, pt.name);
+    } else {
+      let from;
+      let to;
+      if (this.panel.onMouseClickShortRange) {
+        from = moment.utc(pt.start);
+        to = moment.utc(pt.start + pt.ms);
+      } else {
+        from = this.range.from;
+        to = this.range.to;
+      }
+      this._windowOpen(
+        this.panel.rowSelectorURL,
+        from,
+        to,
+        this.panel.rowSelectorURLParam,
+        pt.name
+      );
     }
   }
 
@@ -595,10 +599,16 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     const rows = (this._renderDimensions.rows = this.data.length);
     const rowHeight = (this._renderDimensions.rowHeight = this.panel.rowHeight);
     const rowsHeight = (this._renderDimensions.rowsHeight = rowHeight * rows);
-    if (this.panel.rowSelectorType == 'button') {
-      this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
-    } else {
-      this.rowselWidth = this.panel.rowSelectorWidth;
+    switch (this.panel.rowSelectorType)  {
+      case "button":
+        this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
+        break;
+      case "text":
+        this.rowselWidth = this.panel.rowSelectorWidth;
+        break;
+      case "hidden":
+        this.rowselWidth = 0;
+        break;
     }
     const timeHeight = this.panel.showTimeAxis ? 14 + this.panel.textSizeTime : 0;
     const height = (this._renderDimensions.height = rowsHeight + timeHeight);
@@ -813,23 +823,26 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       let minTextSpot = 0;
       let maxTextSpot = this._renderDimensions.width;
       if (this.panel.writeMetricNames) {
-        if(this.panel.writeMetricNamesRight) {
-            ctx.fillStyle = this.panel.metricNameColor;
-            ctx.textAlign = 'right';
-            const txtinfo = ctx.measureText(metric.name);
-            if (hoverTextStart < 0 || hoverTextStart > txtinfo.width) {
-                ctx.fillText(metric.name, this._renderDimensions.width - offset, labelPositionMetricName);
-                maxTextSpot = this._renderDimensions.width - txtinfo.width - 10;
-            }
-        }
-        else {
-            ctx.fillStyle = this.panel.metricNameColor;
-            ctx.textAlign = 'left';
-            const txtinfo = ctx.measureText(metric.name);
-            if (hoverTextStart < 0 || hoverTextStart > txtinfo.width) {
-                ctx.fillText(metric.name, offset, labelPositionMetricName);
-                minTextSpot = offset + ctx.measureText(metric.name).width + 2;
-            }
+        if (this.panel.writeMetricNamesRight) {
+          ctx.fillStyle = this.panel.metricNameColor;
+          ctx.textAlign = 'right';
+          const txtinfo = ctx.measureText(metric.name);
+          if (hoverTextStart < 0 || hoverTextStart > txtinfo.width) {
+            ctx.fillText(
+              metric.name,
+              this._renderDimensions.width - offset,
+              labelPositionMetricName
+            );
+            maxTextSpot = this._renderDimensions.width - txtinfo.width - 10;
+          }
+        } else {
+          ctx.fillStyle = this.panel.metricNameColor;
+          ctx.textAlign = 'left';
+          const txtinfo = ctx.measureText(metric.name);
+          if (hoverTextStart < 0 || hoverTextStart > txtinfo.width) {
+            ctx.fillText(metric.name, offset, labelPositionMetricName);
+            minTextSpot = offset + ctx.measureText(metric.name).width + 2;
+          }
         }
       }
       if (this.panel.writeLastValue && !this.panel.writeMetricNamesRight) {
@@ -994,6 +1007,8 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     const range = this.range;
     if (this.rowsel.childElementCount != 0)
       this.rowsel.removeChild(this.rowsel.childNodes[0]);
+    if (panel.rowSelectorType == 'hidden')
+      return;
     let table_select = document.createElement('table');
     this.rowsel.appendChild(table_select);
     let rowselParent = this.rowsel.parentNode;
@@ -1035,7 +1050,13 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
           // if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
           //   panel.rowSelectorURL += '/';
           // }
-          this._windowOpen(panel.rowSelectorURL, range.from, range.to, panel.rowSelectorURLParam, metric.name);
+          this._windowOpen(
+            panel.rowSelectorURL,
+            range.from,
+            range.to,
+            panel.rowSelectorURLParam,
+            metric.name
+          );
         }
       });
       table_select.appendChild(tr);
@@ -1050,7 +1071,6 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     let url = baseURL + '?from=' + from + '&to=' + to + '&' + paramKey + '=' + paramValue;
     window.open(url, '_blank');
   }
-
 }
 
 export {DiscretePanelCtrl as PanelCtrl};

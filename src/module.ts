@@ -599,10 +599,16 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     const rows = (this._renderDimensions.rows = this.data.length);
     const rowHeight = (this._renderDimensions.rowHeight = this.panel.rowHeight);
     const rowsHeight = (this._renderDimensions.rowsHeight = rowHeight * rows);
-    if (this.panel.rowSelectorType == 'button') {
-      this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
-    } else {
-      this.rowselWidth = this.panel.rowSelectorWidth;
+    switch (this.panel.rowSelectorType) {
+      case 'button':
+        this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
+        break;
+      case 'text':
+        this.rowselWidth = this.panel.rowSelectorWidth;
+        break;
+      case 'hidden':
+        this.rowselWidth = 0;
+        break;
     }
     const timeHeight = this.panel.showTimeAxis ? 14 + this.panel.textSizeTime : 0;
     const height = (this._renderDimensions.height = rowsHeight + timeHeight);
@@ -1001,6 +1007,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     const range = this.range;
     if (this.rowsel.childElementCount != 0)
       this.rowsel.removeChild(this.rowsel.childNodes[0]);
+    if (panel.rowSelectorType == 'hidden') return;
     let table_select = document.createElement('table');
     this.rowsel.appendChild(table_select);
     let rowselParent = this.rowsel.parentNode;
