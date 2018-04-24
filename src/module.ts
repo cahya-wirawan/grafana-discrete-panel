@@ -1005,6 +1005,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     const ctx = this.context;
     const panel = this.panel;
     const range = this.range;
+    const _windowOpen = this._windowOpen;
     if (this.rowsel.childElementCount != 0)
       this.rowsel.removeChild(this.rowsel.childNodes[0]);
     if (panel.rowSelectorType == 'hidden') return;
@@ -1049,7 +1050,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
           // if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
           //   panel.rowSelectorURL += '/';
           // }
-          this._windowOpen(
+          _windowOpen(
             panel.rowSelectorURL,
             range.from,
             range.to,

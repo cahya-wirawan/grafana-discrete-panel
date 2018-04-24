@@ -32,6 +32,16 @@ yarn pretty
 
 #### Changelog
 
+##### v0.0.10
+
+* Add new options:
+  - write metric name on the right side
+  - enable/disable the values on hover
+  - zoom on mouse click or open a link
+  - choose time range on click
+  - hide or enable the drill down menu using the options: "button", "text" or "hidden"
+  - metric name on the tooltip 
+
 ##### v0.0.9
 
 * Add button with links to each rows (see the first picture above). The size of the button will be scaled automatically

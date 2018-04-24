@@ -544,13 +544,13 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var rowHeight = (this._renderDimensions.rowHeight = this.panel.rowHeight);
                     var rowsHeight = (this._renderDimensions.rowsHeight = rowHeight * rows);
                     switch (this.panel.rowSelectorType) {
-                        case "button":
+                        case 'button':
                             this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
                             break;
-                        case "text":
+                        case 'text':
                             this.rowselWidth = this.panel.rowSelectorWidth;
                             break;
-                        case "hidden":
+                        case 'hidden':
                             this.rowselWidth = 0;
                             break;
                     }
@@ -894,6 +894,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     var ctx = this.context;
                     var panel = this.panel;
                     var range = this.range;
+                    var _windowOpen = this._windowOpen;
                     if (this.rowsel.childElementCount != 0)
                         this.rowsel.removeChild(this.rowsel.childNodes[0]);
                     if (panel.rowSelectorType == 'hidden')
@@ -936,7 +937,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                                 // if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
                                 //   panel.rowSelectorURL += '/';
                                 // }
-                                this._windowOpen(panel.rowSelectorURL, range.from, range.to, panel.rowSelectorURLParam, metric.name);
+                                _windowOpen(panel.rowSelectorURL, range.from, range.to, panel.rowSelectorURLParam, metric.name);
                             }
                         });
                         table_select.appendChild(tr);

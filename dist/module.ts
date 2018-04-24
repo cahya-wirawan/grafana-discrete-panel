@@ -599,14 +599,14 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     const rows = (this._renderDimensions.rows = this.data.length);
     const rowHeight = (this._renderDimensions.rowHeight = this.panel.rowHeight);
     const rowsHeight = (this._renderDimensions.rowsHeight = rowHeight * rows);
-    switch (this.panel.rowSelectorType)  {
-      case "button":
+    switch (this.panel.rowSelectorType) {
+      case 'button':
         this.rowselWidth = Math.max(Math.min(this.panel.rowHeight + 4, 60), 20);
         break;
-      case "text":
+      case 'text':
         this.rowselWidth = this.panel.rowSelectorWidth;
         break;
-      case "hidden":
+      case 'hidden':
         this.rowselWidth = 0;
         break;
     }
@@ -1005,10 +1005,10 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     const ctx = this.context;
     const panel = this.panel;
     const range = this.range;
+    const _windowOpen = this._windowOpen;
     if (this.rowsel.childElementCount != 0)
       this.rowsel.removeChild(this.rowsel.childNodes[0]);
-    if (panel.rowSelectorType == 'hidden')
-      return;
+    if (panel.rowSelectorType == 'hidden') return;
     let table_select = document.createElement('table');
     this.rowsel.appendChild(table_select);
     let rowselParent = this.rowsel.parentNode;
@@ -1050,7 +1050,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
           // if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
           //   panel.rowSelectorURL += '/';
           // }
-          this._windowOpen(
+          _windowOpen(
             panel.rowSelectorURL,
             range.from,
             range.to,
