@@ -154,6 +154,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
   }
 
   onInitEditMode() {
+    /** @namespace kbn.getUnitFormats **/
     this.unitFormats = kbn.getUnitFormats();
 
     this.addEditorTab(
@@ -396,6 +397,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
 
     this.formatter = null;
     if (this.panel.units && 'none' !== this.panel.units) {
+      /** @namespace kbn.valueFormats **/
       this.formatter = kbn.valueFormats[this.panel.units];
     }
 
@@ -435,6 +437,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
             dec = 0;
           }
         }
+        /** @namespace kbn.valueFormats.percentunit **/
         disp += kbn.valueFormats.percentunit(info.per, dec);
         hassomething = true;
       }
@@ -590,6 +593,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     this.mouse.down = null;
     this.hoverPoint = null;
     $(this.canvas).css('cursor', 'wait');
+    /** @namespace appEvents.emit **/
     appEvents.emit('graph-hover-clear');
     this.render();
   }
@@ -1003,7 +1007,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
   }
 
   _renderRowSelection() {
-    const matrix = this._renderDimensions.matrix;
+    let matrix = this._renderDimensions.matrix;
     const ctx = this.context;
     const panel = this.panel;
     const range = this.range;
@@ -1072,10 +1076,8 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
 
   _windowOpen(baseURL, from, to, paramKey, paramValue, newTab) {
     let url = baseURL + '?from=' + from + '&to=' + to + '&' + paramKey + '=' + paramValue;
-    if(newTab)
-      window.open(url, '_blank');
-    else
-      window.open(url, '_self');
+    if (newTab) window.open(url, '_blank');
+    else window.open(url, '_self');
   }
 }
 

@@ -162,6 +162,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     console.log('onDataError', err);
                 };
                 DiscretePanelCtrl.prototype.onInitEditMode = function () {
+                    /** @namespace kbn.getUnitFormats **/
                     this.unitFormats = kbn_1.default.getUnitFormats();
                     this.addEditorTab('Options', 'public/plugins/natel-discrete-panel/partials/editor.options.html', 1);
                     this.addEditorTab('Legend', 'public/plugins/natel-discrete-panel/partials/editor.legend.html', 3);
@@ -361,6 +362,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     this.isStacked = this.panel.display === 'stacked';
                     this.formatter = null;
                     if (this.panel.units && 'none' !== this.panel.units) {
+                        /** @namespace kbn.valueFormats **/
                         this.formatter = kbn_1.default.valueFormats[this.panel.units];
                     }
                     if (update) {
@@ -397,6 +399,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                                     dec = 0;
                                 }
                             }
+                            /** @namespace kbn.valueFormats.percentunit **/
                             disp += kbn_1.default.valueFormats.percentunit(info.per, dec);
                             hassomething = true;
                         }
@@ -534,6 +537,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     this.mouse.down = null;
                     this.hoverPoint = null;
                     jquery_1.default(this.canvas).css('cursor', 'wait');
+                    /** @namespace appEvents.emit **/
                     app_events_1.default.emit('graph-hover-clear');
                     this.render();
                 };
