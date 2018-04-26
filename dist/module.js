@@ -127,6 +127,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         rowSelectorType: 'text',
                         rowSelectorURL: '',
                         rowSelectorURLParam: '',
+                        rowSelectorNewTab: true,
                         rowSelectorWidth: 80,
                         onMouseClickZoom: false,
                         onMouseClickShortRange: true,
@@ -521,7 +522,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                             from = this.range.from;
                             to = this.range.to;
                         }
-                        this._windowOpen(this.panel.rowSelectorURL, from, to, this.panel.rowSelectorURLParam, pt.name);
+                        this._windowOpen(this.panel.rowSelectorURL, from, to, this.panel.rowSelectorURLParam, pt.name, this.panel.rowSelectorNewTab);
                     }
                 };
                 DiscretePanelCtrl.prototype.onMouseSelectedRange = function (range) {
@@ -937,7 +938,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                                 // if (panel.rowSelectorURL.substr(panel.rowSelectorURL.length - 1) != '/') {
                                 //   panel.rowSelectorURL += '/';
                                 // }
-                                _windowOpen(panel.rowSelectorURL, range.from, range.to, panel.rowSelectorURLParam, metric.name);
+                                _windowOpen(panel.rowSelectorURL, range.from, range.to, panel.rowSelectorURLParam, metric.name, panel.rowSelectorNewTab);
                             }
                         });
                         table_select.appendChild(tr);
@@ -945,9 +946,12 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     if (this.panel.rowSelectorType == 'text') {
                     }
                 };
-                DiscretePanelCtrl.prototype._windowOpen = function (baseURL, from, to, paramKey, paramValue) {
+                DiscretePanelCtrl.prototype._windowOpen = function (baseURL, from, to, paramKey, paramValue, newTab) {
                     var url = baseURL + '?from=' + from + '&to=' + to + '&' + paramKey + '=' + paramValue;
-                    window.open(url, '_blank');
+                    if (newTab)
+                        window.open(url, '_blank');
+                    else
+                        window.open(url, '_self');
                 };
                 DiscretePanelCtrl.templateUrl = 'partials/module.html';
                 DiscretePanelCtrl.scrollable = true;

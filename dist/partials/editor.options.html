@@ -121,6 +121,12 @@
             </label>
             <input type="string" ng-model="ctrl.panel.rowSelectorURLParam" class="gf-form-input max-width-20" ng-blur="ctrl.onConfigChanged()" />
         </div>
+        <gf-form-switch class="gf-form"
+                        label="Open in new tab"
+                        label-class="gf-form-label width-16"
+                        checked="ctrl.panel.rowSelectorNewTab"
+                        on-change="ctrl.onConfigChanged()">
+        </gf-form-switch>
         <div class="gf-form">
             <label class="gf-form-label width-6">Text Width</label>
             <input type="number" ng-model="ctrl.panel.rowSelectorWidth" class="gf-form-input max-width-20" ng-blur="ctrl.render()"/>

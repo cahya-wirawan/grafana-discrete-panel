@@ -109,6 +109,7 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     rowSelectorType: 'text',
     rowSelectorURL: '',
     rowSelectorURLParam: '',
+    rowSelectorNewTab: true,
     rowSelectorWidth: 80,
     onMouseClickZoom: false,
     onMouseClickShortRange: true,
@@ -573,7 +574,8 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
         from,
         to,
         this.panel.rowSelectorURLParam,
-        pt.name
+        pt.name,
+        this.panel.rowSelectorNewTab
       );
     }
   }
@@ -1055,7 +1057,8 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
             range.from,
             range.to,
             panel.rowSelectorURLParam,
-            metric.name
+            metric.name,
+            panel.rowSelectorNewTab
           );
         }
       });
@@ -1067,9 +1070,10 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     }
   }
 
-  _windowOpen(baseURL, from, to, paramKey, paramValue) {
+  _windowOpen(baseURL, from, to, paramKey, paramValue, newTab) {
     let url = baseURL + '?from=' + from + '&to=' + to + '&' + paramKey + '=' + paramValue;
-    window.open(url, '_blank');
+    if (newTab) window.open(url, '_blank');
+    else window.open(url, '_self');
   }
 }
 

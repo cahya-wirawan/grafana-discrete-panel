@@ -47,6 +47,7 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
         rowSelectorType: string;
         rowSelectorURL: string;
         rowSelectorURLParam: string;
+        rowSelectorNewTab: boolean;
         rowSelectorWidth: number;
         onMouseClickZoom: boolean;
         onMouseClickShortRange: boolean;
@@ -99,6 +100,6 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
     _renderTimeAxis(): void;
     _renderCrosshair(): void;
     _renderRowSelection(): void;
-    _windowOpen(baseURL: any, from: any, to: any, paramKey: any, paramValue: any): void;
+    _windowOpen(baseURL: any, from: any, to: any, paramKey: any, paramValue: any, newTab: any): void;
 }
 export { DiscretePanelCtrl as PanelCtrl };
