@@ -87,6 +87,13 @@
             label-class="gf-form-label width-14"
             checked="ctrl.panel.highlightOnMouseover"
             on-change="ctrl.onConfigChanged()"></gf-form-switch>
+        <div class="gf-form max-width-20">
+            <span class="gf-form-label width-12">Parsing Code Type</span>
+            <div class="gf-form-select-wrapper gf-form--grow">
+                <select class="gf-form-input" ng-model="ctrl.panel.rowParsingCodeType"
+                        ng-options="f for f in ['none','frame', 'channel']" ng-blur="ctrl.render()"></select>
+            </div>
+        </div>
     </div>
 
     <div class="section gf-form-group">

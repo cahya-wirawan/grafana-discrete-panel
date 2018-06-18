@@ -49,6 +49,7 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
         rowSelectorURLParam: string;
         rowSelectorNewTab: boolean;
         rowSelectorWidth: number;
+        rowParsingCodeType: string;
         onMouseClickZoom: boolean;
         onMouseClickShortRange: boolean;
     };
@@ -64,6 +65,10 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
     _renderDimensions: any;
     _selectionMatrix: Array<Array<String>>;
     rowselWidth: number;
+    parsingCodes: {
+        channel: string[];
+        frame: string[];
+    };
     constructor($scope: any, $injector: any);
     onPanelInitialized(): void;
     onDataError(err: any): void;
