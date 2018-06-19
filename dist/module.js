@@ -169,7 +169,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                             'Invalid channel time stamp',
                             'Invalid calibration factor',
                             'Channel start time not within one sample',
-                            'Invalid site or channel name'
+                            'Invalid site or channel name',
                         ],
                         frame: [
                             'Internal error',
@@ -200,7 +200,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                             'Station is not allowed to send commands',
                             'Invalid channel string size',
                             'Invalid frame time length',
-                            'Command frame too old'
+                            'Command frame too old',
                         ],
                     };
                     // defaults configs
@@ -488,7 +488,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         val = 'Zoom To:';
                     }
                     var decodedString = [];
-                    if (this.panel.rowParsingCodeType != "none") {
+                    if (this.panel.rowParsingCodeType != 'none') {
                         var parsingCode = this.parsingCodes[this.panel.rowParsingCodeType];
                         var bitPosition = 1;
                         var hexCode = parseInt(val, 16);
@@ -501,7 +501,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     }
                     var body = '<div class="graph-tooltip-time">' + name + ': ' + val + '</div>';
                     body += '<center>';
-                    if (this.panel.rowParsingCodeType != "none") {
+                    if (this.panel.rowParsingCodeType != 'none') {
                         for (var i = 0; i < decodedString.length; i++) {
                             body += decodedString[i] + '<br/>';
                         }
