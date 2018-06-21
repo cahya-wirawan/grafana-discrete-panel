@@ -202,6 +202,20 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                             'Invalid frame time length',
                             'Command frame too old',
                         ],
+                        qualityflags: [
+                            'Constant data detected',
+                            'No input from sensor detected',
+                            'Data not checked',
+                            'Data arrived too late',
+                            'Data authentication failed',
+                            'Data not authenticated',
+                            'No cert for data found',
+                            'Data not signed',
+                            'Frame authentication failed',
+                            'Frame not authenticated',
+                            'No cert for frame found',
+                            'Frame not signed'
+                        ],
                     };
                     // defaults configs
                     lodash_1.default.defaultsDeep(this.panel, this.defaults);
@@ -300,6 +314,15 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     return val;
                 };
                 DiscretePanelCtrl.prototype.getColor = function (val) {
+                    if (this.panel.rowParsingCodeType == 'qualityflags') {
+                        var hexCode = parseInt(val, 16);
+                        if ((hexCode & 0x880) != 0)
+                            val = "0x2";
+                        else if ((hexCode & 0xff0) != 0)
+                            val = "0x1";
+                        else
+                            val = "0x0";
+                    }
                     if (lodash_1.default.has(this.colorMap, val)) {
                         return this.colorMap[val];
                     }

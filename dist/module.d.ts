@@ -68,6 +68,7 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
     parsingCodes: {
         channel: string[];
         frame: string[];
+        qualityflags: string[];
     };
     constructor($scope: any, $injector: any);
     onPanelInitialized(): void;
