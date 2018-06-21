@@ -214,7 +214,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                             'Frame authentication failed',
                             'Frame not authenticated',
                             'No cert for frame found',
-                            'Frame not signed'
+                            'Frame not signed',
                         ],
                     };
                     // defaults configs
@@ -317,11 +317,11 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     if (this.panel.rowParsingCodeType == 'qualityflags') {
                         var hexCode = parseInt(val, 16);
                         if ((hexCode & 0x880) != 0)
-                            val = "0x2";
+                            val = '0x2';
                         else if ((hexCode & 0xff0) != 0)
-                            val = "0x1";
+                            val = '0x1';
                         else
-                            val = "0x0";
+                            val = '0x0';
                     }
                     if (lodash_1.default.has(this.colorMap, val)) {
                         return this.colorMap[val];
