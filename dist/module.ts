@@ -337,12 +337,27 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
   }
 
   getColor(val) {
-    if (this.panel.rowParsingCodeType == 'qualityflags') {
-      const hexCode = parseInt(val, 16);
-      if ((hexCode & 0x880) != 0) val = '0x2';
-      else if ((hexCode & 0xff0) != 0) val = '0x1';
-      else val = '0x0';
-    }
+      let hexCode = 0;
+      switch (this.panel.rowParsingCodeType) {
+          case 'frame':
+              hexCode = parseInt(val, 16);
+              if ((hexCode & 0x2000) != 0) val = '0x2';
+              else if ((hexCode & 0x6e000) != 0) val = '0x1';
+              else val = '0x0';
+              break;
+          case 'channel':
+              hexCode = parseInt(val, 16);
+              if ((hexCode & 0x2000) != 0) val = '0x2';
+              else if ((hexCode & 0x4e110) != 0) val = '0x1';
+              else val = '0x0';
+              break;
+          case 'qualityflags':
+              hexCode = parseInt(val, 16);
+              if ((hexCode & 0x880) != 0) val = '0x2';
+              else if ((hexCode & 0xff0) != 0) val = '0x1';
+              else val = '0x0';
+              break;
+      }
     if (_.has(this.colorMap, val)) {
       return this.colorMap[val];
     }
@@ -399,6 +414,17 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       } else {
         let res = new DistinctPoints(metric.target);
         _.forEach(metric.datapoints, point => {
+            switch (this.panel.rowParsingCodeType) {
+                case 'frame':
+                    point[0] = point[0] & 0x6e000;
+                    break;
+                case 'channel':
+                    point[0] = point[0] & 0x4e110;
+                    break;
+                case 'qualityflags':
+                    point[0] = point[0] & 0xff0;
+                    break;
+            }
           res.add(point[1], this.formatValue(point[0]));
         });
         res.finish(this);
@@ -488,8 +514,37 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
     }
   }
 
+  decodeParsingCode(code){
+      let decodedString = [];
+      if (this.panel.rowParsingCodeType != 'none') {
+          let parsingCode = this.parsingCodes[this.panel.rowParsingCodeType];
+          let bitPosition = 1;
+          const hexCode = parseInt(code, 16);
+          if(hexCode == 0) {
+              decodedString.push("Ok");
+              return decodedString;
+          }
+          else if(isNaN(hexCode)) {
+              decodedString.push("N/A");
+              return decodedString;
+          }
+
+          for (let i = 0; i < parsingCode.length; i++) {
+              let parsedCode = hexCode & (bitPosition << i);
+              if (parsedCode != 0) {
+                  decodedString.push(parsingCode[i]);
+              }
+          }
+      }
+      return decodedString;
+  }
+
   getLegendDisplay(info, metric) {
-    let disp = info.val;
+    let disp = "";
+    if (this.panel.rowParsingCodeType != 'none')
+      disp = this.decodeParsingCode(info.val).join(", ");
+    else
+      disp = info.val;
     if (
       this.panel.showLegendPercent ||
       this.panel.showLegendCounts ||
@@ -550,18 +605,8 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       time = to - from;
       val = 'Zoom To:';
     }
-    let decodedString = [];
-    if (this.panel.rowParsingCodeType != 'none') {
-      let parsingCode = this.parsingCodes[this.panel.rowParsingCodeType];
-      let bitPosition = 1;
-      const hexCode = parseInt(val, 16);
-      for (let i = 0; i < parsingCode.length; i++) {
-        let parsedCode = hexCode & (bitPosition << i);
-        if (parsedCode != 0) {
-          decodedString.push(parsingCode[i]);
-        }
-      }
-    }
+    let decodedString = this.decodeParsingCode(val);
+
     let body = '<div class="graph-tooltip-time">' + name + ': ' + val + '</div>';
 
     body += '<center>';

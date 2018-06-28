@@ -90,7 +90,8 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
     removeRangeMap(rangeMap: any): void;
     addRangeMap(): void;
     onConfigChanged(update?: boolean): void;
-    getLegendDisplay(info: any, metric: any): any;
+    decodeParsingCode(code: any): any[];
+    getLegendDisplay(info: any, metric: any): string;
     showTooltip(evt: any, point: any, isExternal: any): void;
     onGraphHover(evt: any, showTT: any, isExternal: any): void;
     onMouseClicked(where: any): void;

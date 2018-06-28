@@ -314,14 +314,35 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     return val;
                 };
                 DiscretePanelCtrl.prototype.getColor = function (val) {
-                    if (this.panel.rowParsingCodeType == 'qualityflags') {
-                        var hexCode = parseInt(val, 16);
-                        if ((hexCode & 0x880) != 0)
-                            val = '0x2';
-                        else if ((hexCode & 0xff0) != 0)
-                            val = '0x1';
-                        else
-                            val = '0x0';
+                    var hexCode = 0;
+                    switch (this.panel.rowParsingCodeType) {
+                        case 'frame':
+                            hexCode = parseInt(val, 16);
+                            if ((hexCode & 0x2000) != 0)
+                                val = '0x2';
+                            else if ((hexCode & 0x6e000) != 0)
+                                val = '0x1';
+                            else
+                                val = '0x0';
+                            break;
+                        case 'channel':
+                            hexCode = parseInt(val, 16);
+                            if ((hexCode & 0x2000) != 0)
+                                val = '0x2';
+                            else if ((hexCode & 0x4e110) != 0)
+                                val = '0x1';
+                            else
+                                val = '0x0';
+                            break;
+                        case 'qualityflags':
+                            hexCode = parseInt(val, 16);
+                            if ((hexCode & 0x880) != 0)
+                                val = '0x2';
+                            else if ((hexCode & 0xff0) != 0)
+                                val = '0x1';
+                            else
+                                val = '0x0';
+                            break;
                     }
                     if (lodash_1.default.has(this.colorMap, val)) {
                         return this.colorMap[val];
@@ -374,6 +395,17 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         else {
                             var res = new distinct_points_1.DistinctPoints(metric.target);
                             lodash_1.default.forEach(metric.datapoints, function (point) {
+                                switch (_this.panel.rowParsingCodeType) {
+                                    case 'frame':
+                                        point[0] = point[0] & 0x6e000;
+                                        break;
+                                    case 'channel':
+                                        point[0] = point[0] & 0x4e110;
+                                        break;
+                                    case 'qualityflags':
+                                        point[0] = point[0] & 0xff0;
+                                        break;
+                                }
                                 res.add(point[1], _this.formatValue(point[0]));
                             });
                             res.finish(_this);
@@ -454,8 +486,35 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         this.render();
                     }
                 };
+                DiscretePanelCtrl.prototype.decodeParsingCode = function (code) {
+                    var decodedString = [];
+                    if (this.panel.rowParsingCodeType != 'none') {
+                        var parsingCode = this.parsingCodes[this.panel.rowParsingCodeType];
+                        var bitPosition = 1;
+                        var hexCode = parseInt(code, 16);
+                        if (hexCode == 0) {
+                            decodedString.push("Ok");
+                            return decodedString;
+                        }
+                        else if (isNaN(hexCode)) {
+                            decodedString.push("N/A");
+                            return decodedString;
+                        }
+                        for (var i = 0; i < parsingCode.length; i++) {
+                            var parsedCode = hexCode & (bitPosition << i);
+                            if (parsedCode != 0) {
+                                decodedString.push(parsingCode[i]);
+                            }
+                        }
+                    }
+                    return decodedString;
+                };
                 DiscretePanelCtrl.prototype.getLegendDisplay = function (info, metric) {
-                    var disp = info.val;
+                    var disp = "";
+                    if (this.panel.rowParsingCodeType != 'none')
+                        disp = this.decodeParsingCode(info.val).join(", ");
+                    else
+                        disp = info.val;
                     if (this.panel.showLegendPercent ||
                         this.panel.showLegendCounts ||
                         this.panel.showLegendTime) {
@@ -510,18 +569,7 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         time = to - from;
                         val = 'Zoom To:';
                     }
-                    var decodedString = [];
-                    if (this.panel.rowParsingCodeType != 'none') {
-                        var parsingCode = this.parsingCodes[this.panel.rowParsingCodeType];
-                        var bitPosition = 1;
-                        var hexCode = parseInt(val, 16);
-                        for (var i = 0; i < parsingCode.length; i++) {
-                            var parsedCode = hexCode & (bitPosition << i);
-                            if (parsedCode != 0) {
-                                decodedString.push(parsingCode[i]);
-                            }
-                        }
-                    }
+                    var decodedString = this.decodeParsingCode(val);
                     var body = '<div class="graph-tooltip-time">' + name + ': ' + val + '</div>';
                     body += '<center>';
                     if (this.panel.rowParsingCodeType != 'none') {
