@@ -1,7 +1,7 @@
 {
   "type": "panel",
-  "name": "Discrete",
-  "id": "natel-discrete-panel",
+  "name": "CTBTO Discrete",
+  "id": "ctbto-discrete-panel",
 
   "info": {
     "description": "Discrete Events grafana",
@@ -34,7 +34,7 @@
       {"name": "Legend", "path": "img/screenshot-options-2.png"}
     ],
     "version": "0.0.10",
-    "updated": "2018-06-28"
+    "updated": "2018-06-29"
   },
 
   "dependencies": {

@@ -237,10 +237,10 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                 DiscretePanelCtrl.prototype.onInitEditMode = function () {
                     /** @namespace kbn.getUnitFormats **/
                     this.unitFormats = kbn_1.default.getUnitFormats();
-                    this.addEditorTab('Options', 'public/plugins/natel-discrete-panel/partials/editor.options.html', 1);
-                    this.addEditorTab('Legend', 'public/plugins/natel-discrete-panel/partials/editor.legend.html', 3);
-                    this.addEditorTab('Colors', 'public/plugins/natel-discrete-panel/partials/editor.colors.html', 4);
-                    this.addEditorTab('Mappings', 'public/plugins/natel-discrete-panel/partials/editor.mappings.html', 5);
+                    this.addEditorTab('Options', 'public/plugins/ctbto-discrete-panel/partials/editor.options.html', 1);
+                    this.addEditorTab('Legend', 'public/plugins/ctbto-discrete-panel/partials/editor.legend.html', 3);
+                    this.addEditorTab('Colors', 'public/plugins/ctbto-discrete-panel/partials/editor.colors.html', 4);
+                    this.addEditorTab('Mappings', 'public/plugins/ctbto-discrete-panel/partials/editor.mappings.html', 5);
                     this.editorTabIndex = 1;
                     this.refresh();
                 };
@@ -493,11 +493,11 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                         var bitPosition = 1;
                         var hexCode = parseInt(code, 16);
                         if (hexCode == 0) {
-                            decodedString.push("Ok");
+                            decodedString.push('Ok');
                             return decodedString;
                         }
                         else if (isNaN(hexCode)) {
-                            decodedString.push("N/A");
+                            decodedString.push('N/A');
                             return decodedString;
                         }
                         for (var i = 0; i < parsingCode.length; i++) {
@@ -510,9 +510,9 @@ System.register(['./canvas-metric', './distinct-points', 'lodash', 'jquery', 'mo
                     return decodedString;
                 };
                 DiscretePanelCtrl.prototype.getLegendDisplay = function (info, metric) {
-                    var disp = "";
+                    var disp = '';
                     if (this.panel.rowParsingCodeType != 'none')
-                        disp = this.decodeParsingCode(info.val).join(", ");
+                        disp = this.decodeParsingCode(info.val).join(', ');
                     else
                         disp = info.val;
                     if (this.panel.showLegendPercent ||

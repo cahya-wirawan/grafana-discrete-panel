@@ -1,7 +1,7 @@
 {
   "type": "panel",
-  "name": "Discrete",
-  "id": "natel-discrete-panel",
+  "name": "CTBTO Discrete",
+  "id": "ctbto-discrete-panel",
 
   "info": {
     "description": "Discrete Events grafana",
