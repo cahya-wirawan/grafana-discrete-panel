@@ -69,6 +69,8 @@ declare class DiscretePanelCtrl extends CanvasPanelCtrl {
         channel: string[];
         frame: string[];
         qualityflags: string[];
+        cq_frame: string[];
+        cq_channel: string[];
     };
     constructor($scope: any, $injector: any);
     onPanelInitialized(): void;

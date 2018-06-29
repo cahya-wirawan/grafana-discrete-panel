@@ -201,6 +201,34 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       'No cert for frame found',
       'Frame not signed',
     ],
+      cq_frame: [
+          'Constant data detected',
+          'No input from sensor detected',
+          'Data not checked',
+          'Data arrived too late',
+          'Data authentication failed', //'Invalid channel signature'
+          'Data not authenticated',
+          'No cert for data found',
+          'Data not signed', //'Channel not signed'
+          'Frame authentication failed',
+          'Frame not authenticated',
+          'No cert for frame found',
+          'Frame not signed',
+      ],
+      cq_channel: [
+          'Constant data detected',
+          'No input from sensor detected',
+          'Data not checked',
+          'Data arrived too late',
+          'Data authentication failed', //'Invalid channel signature'
+          'Data not authenticated',
+          'No cert for data found',
+          'Data not signed', //'Channel not signed'
+          'Frame authentication failed',
+          'Frame not authenticated',
+          'No cert for frame found',
+          'Frame not signed',
+      ],
   };
 
   constructor($scope, $injector) {
@@ -338,26 +366,29 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
 
   getColor(val) {
     let hexCode = 0;
-    switch (this.panel.rowParsingCodeType) {
-      case 'frame':
-        hexCode = parseInt(val, 16);
-        if ((hexCode & 0x2000) != 0) val = '0x2';
-        else if ((hexCode & 0x6e000) != 0) val = '0x1';
-        else val = '0x0';
-        break;
-      case 'channel':
-        hexCode = parseInt(val, 16);
-        if ((hexCode & 0x2000) != 0) val = '0x2';
-        else if ((hexCode & 0x4e110) != 0) val = '0x1';
-        else val = '0x0';
-        break;
-      case 'qualityflags':
-        hexCode = parseInt(val, 16);
-        if ((hexCode & 0x880) != 0) val = '0x2';
-        else if ((hexCode & 0xff0) != 0) val = '0x1';
-        else val = '0x0';
-        break;
-    }
+    if(val != "N/A")
+        switch (this.panel.rowParsingCodeType) {
+          case 'frame':
+            hexCode = parseInt(val, 16);
+            if ((hexCode & 0x2000) != 0) val = '0x2';
+            else if ((hexCode & 0x6e000) != 0) val = '0x1';
+            else val = '0x0';
+            break;
+          case 'channel':
+            hexCode = parseInt(val, 16);
+            if ((hexCode & 0x2000) != 0) val = '0x2';
+            else if ((hexCode & 0x4e110) != 0) val = '0x1';
+            else val = '0x0';
+            break;
+          case 'qualityflags':
+          case 'cq_frame':
+          case 'cq_channel':
+            hexCode = parseInt(val, 16);
+            if ((hexCode & 0x880) != 0) val = '0x2';
+            else if ((hexCode & 0xff0) != 0) val = '0x1';
+            else val = '0x0';
+            break;
+        }
     if (_.has(this.colorMap, val)) {
       return this.colorMap[val];
     }
@@ -414,17 +445,27 @@ class DiscretePanelCtrl extends CanvasPanelCtrl {
       } else {
         let res = new DistinctPoints(metric.target);
         _.forEach(metric.datapoints, point => {
-          switch (this.panel.rowParsingCodeType) {
-            case 'frame':
-              point[0] = point[0] & 0x6e000;
-              break;
-            case 'channel':
-              point[0] = point[0] & 0x4e110;
-              break;
-            case 'qualityflags':
-              point[0] = point[0] & 0xff0;
-              break;
-          }
+          if(point[0] != null)
+              switch (this.panel.rowParsingCodeType) {
+                case 'frame':
+                  point[0] = point[0] & 0x6e000;
+                  break;
+                case 'channel':
+                  point[0] = point[0] & 0x4e110;
+                  break;
+                case 'qualityflags':
+                  point[0] = point[0] & 0xff0;
+                  break;
+                case 'cq_frame':
+                  point[0] = point[0] & 0xf00;
+                  break;
+                case 'cq_channel':
+                  point[0] = point[0] & 0x0f0;
+                  break;
+                case 'cq_all':
+                  point[0] = point[0] & 0xff0;
+                  break;
+              }
           res.add(point[1], this.formatValue(point[0]));
         });
         res.finish(this);
